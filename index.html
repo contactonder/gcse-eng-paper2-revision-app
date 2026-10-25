@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AQA Paper 2 English Language — Level 4 Writing Engine</title>
+  <title>AQA English Language — Dual-Paper Level 4 Writing Engine</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,19 +13,6 @@
           fontFamily: {
             sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Inter', 'sans-serif'],
             mono: ['"SF Mono"', 'ui-monospace', 'Menlo', 'Consolas', 'monospace'],
-          },
-          colors: {
-            brand: {
-              blue: '#0071e3',
-              blueHover: '#0077ed',
-              blueSoft: 'rgba(0,113,227,0.12)',
-              green: '#1d7a34',
-              greenSoft: 'rgba(29,122,52,0.12)',
-              purple: '#6d4aff',
-              purpleSoft: 'rgba(109,74,255,0.12)',
-              amber: '#9a6700',
-              amberSoft: 'rgba(154,103,0,0.12)',
-            }
           }
         }
       }
@@ -58,36 +45,57 @@
       -webkit-backdrop-filter: saturate(180%) blur(20px);
     }
 
-    .card-panel {
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-    /* Custom scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(140, 140, 140, 0.3); border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(140, 140, 140, 0.5); }
 
     .toast-anim {
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.25s ease;
+    }
+    
+    .paper-btn.active {
+      background-color: #0071e3;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+    }
+
+    .nav-tab.active {
+      background-color: rgba(255, 255, 255, 1);
+      color: #0071e3;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .dark .nav-tab.active {
+      background-color: #1f2937;
+      color: #60a5fa;
     }
   </style>
 </head>
 <body class="bg-[#f5f5f7] dark:bg-[#0a0a0c] text-[#1d1d1f] dark:text-[#f5f5f7] min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
 
+  <!-- HEADER & NAV -->
   <header class="sticky top-0 z-50 glass-nav bg-white/80 dark:bg-[#121214]/80 border-b border-black/10 dark:border-white/10">
-    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-blue-600 text-white font-black flex items-center justify-center text-sm shadow-md">
           AQA
         </div>
         <div>
-          <h1 class="font-bold text-base leading-tight tracking-tight">Paper 2 English Language</h1>
-          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Level 4 Writing Engine · Grade 8/9</p>
+          <h1 id="app-paper-title" class="font-bold text-sm md:text-base leading-tight tracking-tight">Paper 2 Writers' Viewpoints & Perspectives</h1>
+          <p class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Level 4 Writing Engine · Grade 8/9</p>
         </div>
       </div>
 
-      <div class="hidden sm:flex items-center gap-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
+      <!-- DUAL PAPER SWITCHER TOGGLE -->
+      <div class="flex items-center bg-gray-200 dark:bg-gray-900 p-1 rounded-xl border border-black/5 dark:border-white/10">
+        <button id="pbtn-p1" onclick="switchPaper('p1')" class="paper-btn px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+          📄 Paper 1 (Creative)
+        </button>
+        <button id="pbtn-p2" onclick="switchPaper('p2')" class="paper-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition">
+          📑 Paper 2 (Transactional)
+        </button>
+      </div>
+
+      <div class="hidden lg:flex items-center gap-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
         <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span> AO5: <strong class="text-black dark:text-white">24 Marks</strong></span>
         <span class="text-gray-300 dark:text-gray-700">|</span>
         <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> AO6: <strong class="text-black dark:text-white">16 Marks</strong></span>
@@ -105,66 +113,57 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
+    <!-- NAVIGATION TABS -->
     <nav class="flex items-center gap-1.5 p-1.5 bg-gray-200/70 dark:bg-gray-900/80 rounded-2xl overflow-x-auto border border-black/5 dark:border-white/5 scrollbar-none">
-      <button id="tab-lab" onclick="switchTab('lab')" class="tab-btn active px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm">
+      <button id="tab-lab" onclick="switchTab('lab')" class="nav-tab active px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
         📐 Formats
       </button>
-      <button id="tab-powerups" onclick="switchTab('powerups')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-powerups" onclick="switchTab('powerups')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         ⚡ Power-ups
       </button>
-      <button id="tab-decoder" onclick="switchTab('decoder')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-ao6" onclick="switchTab('ao6')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
+        ✍️ AO6 Technical
+      </button>
+      <button id="tab-decoder" onclick="switchTab('decoder')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         🎯 Mark Scheme
       </button>
-      <button id="tab-excerpt" onclick="switchTab('excerpt')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-excerpt" onclick="switchTab('excerpt')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         📜 Scheme Notes
       </button>
-      <button id="tab-examples" onclick="switchTab('examples')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-examples" onclick="switchTab('examples')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         🌟 Models
       </button>
-      <button id="tab-vault" onclick="switchTab('vault')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-vault" onclick="switchTab('vault')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         🗄️ Prompts
       </button>
-      <button id="tab-drill" onclick="switchTab('drill')" class="tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
+      <button id="tab-drill" onclick="switchTab('drill')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         ⏱️ Timed Drill
       </button>
     </nav>
 
+    <!-- SECTION 1: FORMAT BLUEPRINTS -->
     <section id="sec-lab" class="space-y-6">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
-          <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Format Blueprints</span>
-          <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Five ways to hit the form.</h2>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
-            Choose a Paper 2 format. Plain text shows the actual script template. Annotated breaks down the macro stage, exact purpose, and formula behind each paragraph.
+          <span id="lab-paper-badge" class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">PAPER 2 FORMAT BLUEPRINTS</span>
+          <h2 id="lab-paper-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Five ways to hit the form.</h2>
+          <p id="lab-paper-desc" class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
+            Choose an exam format. Plain text shows the actual script template. Annotated breaks down the macro stage, exact purpose, and formula behind each paragraph.
           </p>
         </div>
         <div class="flex items-center gap-1 bg-gray-200 dark:bg-gray-900 p-1 rounded-xl border border-black/5 dark:border-white/10 self-start md:self-auto">
-          <button id="btn-fmt-annotated" onclick="setFormatMode('annotated')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm">
+          <button id="btn-fmt-annotated" onclick="setFormatMode('annotated')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer">
             Annotated
           </button>
-          <button id="btn-fmt-plain" onclick="setFormatMode('plain')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400">
+          <button id="btn-fmt-plain" onclick="setFormatMode('plain')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
             Plain Text
           </button>
         </div>
       </div>
 
       <!-- Format selector buttons -->
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <button id="fmt-speech" onclick="loadFormat('speech')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">
-          🎤 Speech
-        </button>
-        <button id="fmt-article" onclick="loadFormat('article')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📰 Article
-        </button>
-        <button id="fmt-letter" onclick="loadFormat('letter')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          ✉️️ Letter
-        </button>
-        <button id="fmt-leaflet" onclick="loadFormat('leaflet')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📋 Leaflet
-        </button>
-        <button id="fmt-essay" onclick="loadFormat('essay')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📝 Essay
-        </button>
+      <div id="format-selector-buttons" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <!-- Rendered dynamically -->
       </div>
 
       <div id="format-display" class="space-y-4">
@@ -172,110 +171,45 @@
       </div>
     </section>
 
+    <!-- SECTION 2: POWER-UPS -->
     <section id="sec-powerups" class="hidden space-y-6">
       <div class="border-b border-black/10 dark:border-white/10 pb-4">
-        <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Universal Moves</span>
-        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Three syntactic power-ups. Any form.</h2>
+        <span id="powerups-paper-badge" class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">PAPER 2 UNIVERSAL MOVES</span>
+        <h2 id="powerups-paper-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Three syntactic power-ups. Any form.</h2>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
-          DAREST supplies the raw persuasive vocabulary. These syntactic formulas determine how you frame them so AO5 cohesion and AO6 structural control read as Grade 8/9 Level 4.
+          Syntactic formulas determine how you frame ideas so AO5 cohesion and AO6 structural control read as Grade 8/9 Level 4.
         </p>
       </div>
 
-      <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-amber-700 dark:text-amber-400 uppercase tracking-wide">DAREST vs. Syntactic Power-ups</h3>
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">Level 2 Ingredients vs Level 4 Engine</span>
-        </div>
-        <p class="text-xs leading-relaxed text-gray-700 dark:text-gray-300">
-          In class, DAREST stands for Direct address, Alliteration, Rhetorical questions, Emotive language, Statistics, Triples. That provides basic ingredients. Power-ups are the syntactic structures: where the emotive word sits, how the concession turns, and which punctuation mark secures Level 4 technical marks.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-          <div class="bg-white/60 dark:bg-black/40 p-3 rounded-xl border border-amber-500/20 text-xs">
-            <strong class="block font-bold text-amber-900 dark:text-amber-300 mb-1">DAREST (Raw Ingredients)</strong>
-            <p class="text-gray-600 dark:text-gray-400">Persuasive vocabulary: “Unacceptable”, “you/we”, a statistic, a triple list.</p>
-          </div>
-          <div class="bg-white/60 dark:bg-black/40 p-3 rounded-xl border border-amber-500/20 text-xs">
-            <strong class="block font-bold text-amber-900 dark:text-amber-300 mb-1">Power-ups (Level 4 Engine)</strong>
-            <p class="text-gray-600 dark:text-gray-400">Place “Unacceptable.” as the minor sentence at the end of a 3-sentence rhythm stack for intentional cadence.</p>
-          </div>
-        </div>
-      </div>
+      <div id="powerups-banner-box"></div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Power up 1 -->
-        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
-          <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold font-mono bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
-            AO6 ACCURACY · POWER-UP 01
-          </span>
-          <h3 class="text-lg font-bold">The Colon Rule</h3>
-          <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-            Examiners penalize essays that rely solely on commas and full stops. A colon demonstrates intentional, high-level grammatical control.
-          </p>
-
-          <div class="bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10 text-xs font-mono text-emerald-600 dark:text-emerald-400">
-            [Independent statement] : [direct clarification / cause]
-          </div>
-
-          <div class="text-xs space-y-1">
-            <span class="font-bold text-gray-500 dark:text-gray-400">TRIGGER:</span>
-            <p class="text-gray-700 dark:text-gray-300">In Paragraph 2 or 4 when expanding on a core problem or delivering an ultimate cause.</p>
-          </div>
-
-          <div class="border-l-2 border-emerald-500 pl-3 py-1 text-xs text-gray-600 dark:text-gray-300 italic">
-            "The alternative is unthinkable: gridlock, toxic emissions, and total urban stagnation."
-          </div>
-        </div>
-
-        <!-- Power up 2 -->
-        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
-          <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold font-mono bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300">
-            AO6 SYNTAX · POWER-UP 02
-          </span>
-          <h3 class="text-lg font-bold">3-Sentence Rhythm Stack</h3>
-          <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-            Uniform sentence lengths sound repetitive. A long complex sentence, followed by a mid-length compound sentence, closed by a 1–3 word minor sentence creates dramatic cadence.
-          </p>
-
-          <div class="bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10 text-xs font-mono text-blue-600 dark:text-blue-400">
-            Complex (Long) → Compound (Mid) → Minor (1-3 words)
-          </div>
-
-          <div class="text-xs space-y-1">
-            <span class="font-bold text-gray-500 dark:text-gray-400">TRIGGER:</span>
-            <p class="text-gray-700 dark:text-gray-300">Paragraph 2 core problem breakdown, landing on an emphatic minor punch sentence.</p>
-          </div>
-
-          <div class="border-l-2 border-blue-500 pl-3 py-1 text-xs text-gray-600 dark:text-gray-300 italic">
-            "Although private cars offer individual freedom, they systematically destroy air quality. We commute in silence, yet we ignore the damage. Unacceptable."
-          </div>
-        </div>
-
-        <!-- Power up 3 -->
-        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
-          <span class="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold font-mono bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
-            AO5 COHESION · POWER-UP 03
-          </span>
-          <h3 class="text-lg font-bold">The Pivot Bridge</h3>
-          <p class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-            Replaces simplistic markers like "On the other hand" with an integrated concession clause that immediately turns the argument back to your side.
-          </p>
-
-          <div class="bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/10 text-xs font-mono text-purple-600 dark:text-purple-400">
-            Granted [opposing view]; nevertheless, [your refutation].
-          </div>
-
-          <div class="text-xs space-y-1">
-            <span class="font-bold text-gray-500 dark:text-gray-400">TRIGGER:</span>
-            <p class="text-gray-700 dark:text-gray-300">Paragraph 3 counter-argument refutation before dismantling opposition claims.</p>
-          </div>
-
-          <div class="border-l-2 border-purple-500 pl-3 py-1 text-xs text-gray-600 dark:text-gray-300 italic">
-            "Granted, car ownership provides undeniable convenience; nevertheless, our climate crisis demands immediate structural sacrifice."
-          </div>
-        </div>
+      <div id="powerups-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
+    <!-- SECTION AO6: TECHNICAL ACCURACY -->
+    <section id="sec-ao6" class="hidden space-y-6">
+      <div class="border-b border-black/10 dark:border-white/10 pb-4">
+        <span id="ao6-paper-badge" class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">AO6 TECHNICAL ACCURACY · 16 MARKS</span>
+        <h2 id="ao6-paper-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Full control of sentences, punctuation and vocabulary.</h2>
+        <p id="ao6-paper-desc" class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
+          Level 4 AO6 requires consistently secure sentence demarcation, a wide range of punctuation used accurately, a full range of sentence forms for effect, Standard English, and high-level spelling including ambitious vocabulary.
+        </p>
+      </div>
+
+      <div id="ao6-banner-box"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="ao6-criteria-grid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div id="ao6-examples-box" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- SECTION 3: MARK SCHEME DECODER -->
     <section id="sec-decoder" class="hidden space-y-6">
       <div class="border-b border-black/10 dark:border-white/10 pb-4">
         <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Mark Scheme Decoder</span>
@@ -285,7 +219,6 @@
         </p>
       </div>
 
-      <!-- Mark scheme bands overview -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         <div class="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-800 dark:text-emerald-300">LEVEL 4 · 19–24 / 13–16</span>
@@ -295,7 +228,7 @@
         <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-1">
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-800 dark:text-blue-300">LEVEL 3 · 13–18 / 9–12</span>
           <h3 class="font-bold text-base text-blue-900 dark:text-blue-200">Clear & Consistent</h3>
-          <p class="text-xs text-blue-800/80 dark:text-blue-300/80">Clear argument, logical discourse markers, general technical accuracy.</p>
+          <p class="text-xs text-blue-800/80 dark:text-blue-300/80">Clear argument/narrative, logical discourse markers, general technical accuracy.</p>
         </div>
         <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-1">
           <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-300">LEVEL 2 · 7–12 / 5–8</span>
@@ -309,77 +242,30 @@
         </div>
       </div>
 
-      <!-- Decoder Table -->
       <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs border-collapse">
             <thead>
               <tr class="bg-gray-100 dark:bg-gray-900/80 text-gray-500 dark:text-gray-400 font-mono border-b border-black/10 dark:border-white/10">
-                <th class="p-3 w-28">Objective</th>
+                <th class="p-3 w-32">Objective</th>
                 <th class="p-3">Official Marking Wording</th>
                 <th class="p-3">Plain English Translation</th>
                 <th class="p-3">Concrete Formula</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-black/5 dark:divide-white/5">
-              <tr>
-                <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Speech</td>
-                <td class="p-3">Tone, style and register are assuredly matched to purpose and audience.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Address the hall immediately with a collective stance and a direct question.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Greeting → audience stance → hook question</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Article</td>
-                <td class="p-3">Tone, style and register are assuredly matched to publishing form.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Show publication layout before the body text starts.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Headline + strapline + byline + direct hook</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Letter</td>
-                <td class="p-3">Tone, style and register are assuredly matched to formal recipient.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Establish formal hierarchy and subject line before the argument.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Recipient address + salutation + RE: subject</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Leaflet</td>
-                <td class="p-3">Organises complex information logically with effective structural features.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Chunk information into actionable sections with subheadings and bullet points.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Title + subheading + action bullet points</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Essay</td>
-                <td class="p-3">Sustained and inventive craft with controlled academic register.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Open with an objective academic thesis statement.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Thesis + conceptual signposting</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-purple-600 dark:text-purple-400">AO5 Cohesion</td>
-                <td class="p-3">Fluently linked paragraphs with seamlessly integrated discourse markers.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Avoid "Firstly / Secondly". Turn an opposing view smoothly using concessions.</td>
-                <td class="p-3 font-mono text-purple-600 dark:text-purple-400">Granted [counter]; nevertheless, [refutation].</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400">AO6 Punctuation</td>
-                <td class="p-3">Wide range of punctuation is used with a high level of accuracy.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Use colons, semicolons, or dashes for structural clarification rather than decoration.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">[Statement] : [direct cause]</td>
-              </tr>
-              <tr>
-                <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400">AO6 Sentences</td>
-                <td class="p-3">Uses a full range of appropriate sentence forms for effect.</td>
-                <td class="p-3 text-gray-600 dark:text-gray-300">Vary sentence lengths systematically to control reading pace.</td>
-                <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Complex → compound → minor</td>
-              </tr>
+            <tbody id="decoder-table-body" class="divide-y divide-black/5 dark:divide-white/5">
+              <!-- Rendered dynamically -->
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
+    <!-- SECTION 4: SCHEME NOTES -->
     <section id="sec-excerpt" class="hidden space-y-6">
       <div class="border-b border-black/10 dark:border-white/10 pb-4">
         <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Official Mark Scheme Excerpt</span>
-        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">AQA 8700/2 Level 4 Standard</h2>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">AQA Level 4 Standard</h2>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
           Detailed breakdown of official descriptor bands for AO5 (24 marks) and AO6 (16 marks).
         </p>
@@ -418,98 +304,32 @@
               </div>
             </div>
           </div>
-
-          <div class="space-y-2">
-            <h4 class="font-bold text-sm text-blue-600 dark:text-blue-400">Lower Level 4 (19–21 marks) — Convincing</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-gray-50 dark:bg-black/40 p-4 rounded-xl border border-black/5 dark:border-white/10 space-y-2">
-                <strong class="block text-black dark:text-white font-bold">CONTENT:</strong>
-                <ul class="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
-                  <li>Communication is convincing and directly relevant to focus and task.</li>
-                  <li>Tone, style and register are convincingly matched to purpose and audience.</li>
-                  <li>Extensive vocabulary with conscious crafting of linguistic devices.</li>
-                </ul>
-              </div>
-              <div class="bg-gray-50 dark:bg-black/40 p-4 rounded-xl border border-black/5 dark:border-white/10 space-y-2">
-                <strong class="block text-black dark:text-white font-bold">ORGANISATION:</strong>
-                <ul class="list-disc pl-4 space-y-1 text-gray-600 dark:text-gray-300">
-                  <li>Varied and effective structural features.</li>
-                  <li>Writing is highly engaging with a range of developed complex ideas.</li>
-                  <li>Consistently coherent use of paragraphs with integrated discourse markers.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-6 space-y-4 shadow-sm">
-        <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4">
-          <div>
-            <h3 class="text-xl font-bold">AO6 · Technical Accuracy</h3>
-            <p class="text-xs text-gray-500">16 marks total (40% of Section B)</p>
-          </div>
-          <span class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
-            13–16 MARKS
-          </span>
-        </div>
-
-        <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          <li class="bg-gray-50 dark:bg-black/40 p-3 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
-            <strong class="text-emerald-600 dark:text-emerald-400 font-bold block">Sentence Demarcation</strong>
-            <p class="text-gray-600 dark:text-gray-300">Sentence demarcation is consistently secure and consistently accurate across complex structures.</p>
-          </li>
-          <li class="bg-gray-50 dark:bg-black/40 p-3 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
-            <strong class="text-emerald-600 dark:text-emerald-400 font-bold block">Punctuation Range</strong>
-            <p class="text-gray-600 dark:text-gray-300">Wide range of punctuation is used with a high level of accuracy (colons, semicolons, dashes).</p>
-          </li>
-          <li class="bg-gray-50 dark:bg-black/40 p-3 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
-            <strong class="text-emerald-600 dark:text-emerald-400 font-bold block">Sentence Forms</strong>
-            <p class="text-gray-600 dark:text-gray-300">Uses a full range of appropriate sentence forms for intentional atmospheric effect.</p>
-          </li>
-          <li class="bg-gray-50 dark:bg-black/40 p-3 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
-            <strong class="text-emerald-600 dark:text-emerald-400 font-bold block">Grammar & Spelling</strong>
-            <p class="text-gray-600 dark:text-gray-300">Standard English used consistently with high level of accuracy in ambitious vocabulary spelling.</p>
-          </li>
-        </ul>
       </div>
     </section>
 
+    <!-- SECTION 5: MODEL EXECUTIONS -->
     <section id="sec-examples" class="hidden space-y-6">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
           <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Concrete Execution</span>
           <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Level 4, line by line.</h2>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
-            Full Grade 8/9 model responses for all five forms tied to our formula blueprints.
+            Full Grade 8/9 model responses tied directly to our formula blueprints.
           </p>
         </div>
         <div class="flex items-center gap-1 bg-gray-200 dark:bg-gray-900 p-1 rounded-xl border border-black/5 dark:border-white/10 self-start md:self-auto">
-          <button id="btn-mode-annotated" onclick="setExampleMode('annotated')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm">
+          <button id="btn-mode-annotated" onclick="setExampleMode('annotated')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer">
             Annotated
           </button>
-          <button id="btn-mode-plain" onclick="setExampleMode('plain')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400">
+          <button id="btn-mode-plain" onclick="setExampleMode('plain')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
             Plain Text
           </button>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <button id="ex-fmt-speech" onclick="loadExampleFormat('speech')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">
-          🎤 Speech
-        </button>
-        <button id="ex-fmt-article" onclick="loadExampleFormat('article')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📰 Article
-        </button>
-        <button id="ex-fmt-letter" onclick="loadExampleFormat('letter')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          ✉️ Letter
-        </button>
-        <button id="ex-fmt-leaflet" onclick="loadExampleFormat('leaflet')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📋 Leaflet
-        </button>
-        <button id="ex-fmt-essay" onclick="loadExampleFormat('essay')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📝 Essay
-        </button>
+      <div id="example-selector-buttons" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <!-- Rendered dynamically -->
       </div>
 
       <div id="example-display-container" class="space-y-4">
@@ -517,36 +337,23 @@
       </div>
     </section>
 
+    <!-- SECTION 6: PROMPT VAULT -->
     <section id="sec-vault" class="hidden space-y-6">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
           <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Prompt Vault</span>
-          <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Fifty exam-style questions.</h2>
+          <h2 id="vault-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Exam-style practice questions.</h2>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
-            Ten prompts for each format, tagged to live papers. Copy one or send it straight to the timed drill.
+            Verified prompts tagged to live papers. Copy one or send it straight to the timed drill.
           </p>
         </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-500/30 self-start md:self-auto">
-          50 VERIFIED DRILLS
+        <span id="vault-count-badge" class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-500/30 self-start md:self-auto">
+          VERIFIED DRILLS
         </span>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-        <button id="vcat-speech" onclick="loadVaultCategory('speech')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">
-          🎤 Speech (10)
-        </button>
-        <button id="vcat-article" onclick="loadVaultCategory('article')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📰 Article (10)
-        </button>
-        <button id="vcat-letter" onclick="loadVaultCategory('letter')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          ✉️ Letter (10)
-        </button>
-        <button id="vcat-leaflet" onclick="loadVaultCategory('leaflet')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📋 Leaflet (10)
-        </button>
-        <button id="vcat-essay" onclick="loadVaultCategory('essay')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
-          📝 Essay (10)
-        </button>
+      <div id="vault-selector-buttons" class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+        <!-- Rendered dynamically -->
       </div>
 
       <div id="vault-prompts-list" class="space-y-3">
@@ -554,27 +361,23 @@
       </div>
     </section>
 
+    <!-- SECTION 7: TIMED DRILL DOJO -->
     <section id="sec-drill" class="hidden space-y-6">
       <div class="border-b border-black/10 dark:border-white/10 pb-4">
         <span class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Timed Drill Dojo</span>
-        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Fifteen minutes to write.</h2>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Exam simulation mode.</h2>
         <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">
           Exam-style countdown. Spellcheck is disabled. Complete your draft and verify against the checklist.
         </p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        <!-- Left panel controls -->
         <div class="lg:col-span-5 space-y-4">
           <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
             <div>
               <label class="text-xs font-bold font-mono text-blue-600 dark:text-blue-400 uppercase block mb-1">Target Format</label>
               <select id="dojo-form-select" onchange="onDojoFormChange()" class="w-full bg-gray-100 dark:bg-black/60 border border-black/10 dark:border-white/10 rounded-xl p-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="speech">🎤 Speech</option>
-                <option value="article">📰 Article</option>
-                <option value="letter">✉️ Formal Letter</option>
-                <option value="leaflet">📋 Leaflet</option>
-                <option value="essay">📝 Essay</option>
+                <!-- Rendered dynamically -->
               </select>
             </div>
 
@@ -583,28 +386,27 @@
                 Live June 2022
               </span>
               <p id="dojo-prompt-text" class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed italic">
-                "Cars are convenient, comfortable and save time. However, we need to use them less by making public transport cheaper, more reliable and easier to access. Write a speech for a meeting of your local council."
+                Write a speech for a meeting of your local council arguing public transport should be cheaper.
               </p>
             </div>
 
             <div class="flex items-center justify-between gap-2">
-              <button onclick="nextDojoPrompt()" class="flex-1 py-2 px-3 rounded-xl bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-xs font-bold transition">
+              <button onclick="nextDojoPrompt()" class="flex-1 py-2 px-3 rounded-xl bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-xs font-bold transition cursor-pointer">
                 🎲 Next Prompt
               </button>
-              <button id="btn-timer-start" onclick="startDojoTimer()" class="flex-1 py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition">
-                ▶ Start 15:00
+              <button id="btn-timer-start" onclick="startDojoTimer()" class="flex-1 py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer">
+                ▶ Start 45:00
               </button>
-              <button onclick="stopDojoTimer()" class="py-2 px-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold transition">
+              <button onclick="stopDojoTimer()" class="py-2 px-3 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold transition cursor-pointer">
                 ⏸ Pause
               </button>
             </div>
 
             <div class="text-center pt-2">
-              <span id="dojo-timer-display" class="font-mono text-4xl font-extrabold tracking-tight text-blue-600 dark:text-blue-400">15:00</span>
+              <span id="dojo-timer-display" class="font-mono text-4xl font-extrabold tracking-tight text-blue-600 dark:text-blue-400">45:00</span>
             </div>
           </div>
 
-          <!-- Dynamic checklist -->
           <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
             <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
               <strong class="text-xs font-bold uppercase tracking-wider">Level 4 Self-Check</strong>
@@ -617,20 +419,19 @@
               <!-- Rendered dynamically -->
             </div>
 
-            <button onclick="logCompletedDrill()" class="w-full mt-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-md">
+            <button onclick="logCompletedDrill()" class="w-full mt-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-md cursor-pointer">
               ✓ Log Completed Drill
             </button>
           </div>
         </div>
 
-        <!-- Right writing area -->
         <div class="lg:col-span-7 bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
           <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
             <span class="text-xs font-bold font-mono text-gray-500 uppercase">Drafting Area (Spellcheck Disabled)</span>
             <span id="dojo-word-count" class="text-xs font-bold font-mono text-blue-600 dark:text-blue-400">0 words</span>
           </div>
 
-          <textarea id="dojo-editor" oninput="updateWordCount()" spellcheck="false" autocorrect="off" autocomplete="off" placeholder="Type your response here. Focus on executing the Level 4 macro structure and syntactic power-ups..." class="w-full h-[520px] bg-gray-50 dark:bg-black/60 border border-black/10 dark:border-white/10 rounded-xl p-4 text-sm font-sans leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
+          <textarea id="dojo-editor" oninput="updateWordCount()" spellcheck="false" autocorrect="off" autocomplete="off" placeholder="Type your response here..." class="w-full h-[520px] bg-gray-50 dark:bg-black/60 border border-black/10 dark:border-white/10 rounded-xl p-4 text-sm font-sans leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"></textarea>
         </div>
       </div>
     </section>
@@ -638,135 +439,67 @@
   </main>
 
   <footer class="border-t border-black/10 dark:border-white/10 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
-    AQA GCSE English Language 8700/2 · Independent Level 4 Writing Engine
+    AQA GCSE English Language (8700/1 & 8700/2) · Dual-Paper Level 4 Writing Engine
   </footer>
 
-  <!-- Toast element -->
   <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-12 opacity-0 pointer-events-none toast-anim bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2.5 rounded-full text-xs font-bold shadow-2xl z-50 flex items-center gap-2">
     <span id="toast-icon">✨</span>
     <span id="toast-msg">Notification message</span>
   </div>
 
   <script>
-    // DATA & STATE
+    let currentPaper = 'p2';
     let currentFormatMode = 'annotated';
+    let currentFmt = 'speech';
     let currentExampleFmt = 'speech';
     let currentExampleMode = 'annotated';
     let currentVaultCat = 'speech';
     let drillCount = 0;
     
     let timerInterval = null;
-    let timerSeconds = 900; // 15 mins
+    let timerSeconds = 45 * 60;
 
-    // DYNAMIC CHECKLIST DEFINITIONS
-    const dynamicChecklists = {
-      speech: [
-        "Opening addresses the hall directly and establishes room setup.",
-        "Directly answers the prompt statement in paragraph 1.",
-        "Includes three persuasive DAREST techniques integrated naturally.",
-        "Contains 1 Colon Rule sentence and 1 3-Sentence Rhythm Stack.",
-        "Uses 'The Pivot Bridge' (Granted... nevertheless) against opposition.",
-        "Closing makes a direct call to action / final decision demand."
-      ],
-      article: [
-        "Includes punchy headline, sub-heading strapline, and byline upfront.",
-        "Opening hooks the magazine/newspaper reader immediately.",
-        "Uses distinct subheadings to organize core argument stages.",
-        "Contains 1 Colon Rule sentence and 1 3-Sentence Rhythm Stack.",
-        "Uses 'The Pivot Bridge' (Granted... nevertheless) to refute opposition.",
-        "Ends with a strong concluding vision or memorable punchline."
-      ],
-      letter: [
-        "Includes formal recipient address block, salutation, and RE: line.",
-        "States formal purpose and position clearly in paragraph 1.",
-        "Maintains an assured, professional register throughout.",
-        "Contains 1 Colon Rule sentence and 1 3-Sentence Rhythm Stack.",
-        "Uses 'The Pivot Bridge' (Granted... nevertheless) for policy counter-arguments.",
-        "Uses matching formal valediction (Yours sincerely / Yours faithfully)."
-      ],
-      leaflet: [
-        "Features a prominent bold main title and catchy slogan.",
-        "Chunks key information under bold, informative section subheadings.",
-        "Includes an actionable bullet-pointed list of recommendations.",
-        "Contains 1 Colon Rule sentence and 1 3-Sentence Rhythm Stack.",
-        "Uses 'The Pivot Bridge' (Granted... nevertheless) to bust common myths.",
-        "Ends with clear takeaway steps and contact/portal information."
-      ],
-      essay: [
-        "Delivers an objective, academic thesis statement in sentence 1.",
-        "Avoids first-person conversational slang; maintains analytical tone.",
-        "Contains 1 Colon Rule sentence and 1 3-Sentence Rhythm Stack.",
-        "Uses 'The Pivot Bridge' (Granted... nevertheless) to weigh opposing views.",
-        "Links paragraphs smoothly without mechanical 'Firstly/Secondly' lists.",
-        "Synthesizes arguments into an authoritative, decisive conclusion."
-      ]
+    const paper1FormatData = {
+      narrative: {
+        title: "1. NARRATIVE STORY BLUEPRINT",
+        icon: "📖",
+        desc: "High-level macro flow & paragraph drill-down for 45-minute story arcs.",
+        macro: [
+          { label: "1. OPENING", sub: "Micro-Zoom Hook" },
+          { label: "2. BACKSTORY", sub: "Context & Mood" },
+          { label: "3. CLIMAX", sub: "Inciting Incident" },
+          { label: "4. FALLING ACTION", sub: "Aftermath Focus" },
+          { label: "5. CLOSE", sub: "Cyclic Resolution" }
+        ],
+        paragraphs: [
+          { name: "SECTION 1: MICRO-ZOOM OPENING", purpose: "Hook the reader instantly by focusing on a single microscopic sensory detail.", formula: "Microscopic Object Focus + Dynamic Verb + Atmospheric Setup", template: "A single grain of rust flaked from the iron hinge, tumbling into the dark abyss beneath the floorboards." },
+          { name: "SECTION 2: ESTABLISHING MOOD & BACKSTORY", purpose: "Build character perspective and environmental tension using varied syntax.", formula: "Pathetic Fallacy + Interior Monologue + 3-Sentence Rhythm Stack", template: "The wind tore across the barren ridge, stripping the heather bare. She pulled her collar tight. Nowhere to run." },
+          { name: "SECTION 3: THE INCITING INCIDENT / CLIMAX", purpose: "Deliver peak narrative tension using high-velocity verbs and colon clarification.", formula: "The Colon Rule [Impact Statement : Immediate Cause] + Short Declarative Burst", template: "Then, the floorboards groaned under a sudden weight: a heavy shadow detached itself from the doorway." },
+          { name: "SECTION 4: FALLING ACTION & AFTERMATH", purpose: "Process the immediate physical and emotional aftermath of the climax.", formula: "Fragmented Syntax + Rapid Pacing + Visceral Sensory Detail", template: "Silence rushed back into the room. Her pulse drummed against her ribs like trapped wings." },
+          { name: "SECTION 5: CYCLIC CLOSE", purpose: "Bring the story full circle by echoing the opening micro image.", formula: "Echo Opening Image + Final Philosophical Punchline", template: "Another flake of rust hit the floor. The door remained open, but she was no longer afraid." }
+        ]
+      },
+      descriptive: {
+        title: "2. DESCRIPTIVE WRITING BLUEPRINT",
+        icon: "🎨",
+        desc: "High-level macro flow & paragraph drill-down for cinematic scene descriptions.",
+        macro: [
+          { label: "1. MICRO ZOOM", sub: "Extreme Close-Up" },
+          { label: "2. EXPANSION", sub: "Mid-Range Pan" },
+          { label: "3. PANORAMA", sub: "Macro Scale" },
+          { label: "4. CONTRAST", sub: "Light & Shadow" },
+          { label: "5. FINAL IMAGE", sub: "Haunting Echo" }
+        ],
+        paragraphs: [
+          { name: "SECTION 1: EXTREME CLOSE-UP", purpose: "Anchor the reader's eye onto one microscopic texture or movement.", formula: "Adverbial Starter + Textural Adjectives + Metaphor", template: "Beneath the peeling green paint, swollen timber wept beads of amber resin." },
+          { name: "SECTION 2: MID-RANGE PANNING", purpose: "Expand the field of vision to include surrounding architecture or nature.", formula: "The Colon Rule + Auditory Layering", template: "The forest encroached from all sides: ancient oaks groaning under blankets of grey moss." },
+          { name: "SECTION 3: MACRO PANORAMA", purpose: "Showcase grand scale and atmospheric control across the environment.", formula: "3-Sentence Stack (Complex -> Compound -> Minor)", template: "Mist choked the valley floor, swallowing distant peaks whole. Light struggled to pierce the canopy. Suffocating." },
+          { name: "SECTION 4: SHADOW & COLOUR", purpose: "Introduce dramatic sensory contrast to bring the static setting alive.", formula: "Juxtaposition of Color Hues + Kinetic Verbs", template: "Streaks of bruised purple pierced the charcoal clouds, staining the asphalt blood-red." },
+          { name: "SECTION 5: FINAL SNAPSHOT", purpose: "Leave the reader with a lingering sensory snapshot and quiet resolution.", formula: "Single Isolated Sentence + Auditory Fade-Out", template: "Then, the wind died, leaving only the steady drip of rainwater echoing into the night." }
+        ]
+      }
     };
 
-    // PROMPT VAULT DATA
-    const vaultPrompts = {
-      speech: [
-        { tag: "Live June 2022", text: "'Cars are convenient, comfortable and save time. However, we need to use them less by making public transport such as trains, trams and buses cheaper, more reliable and easier to access.' Write a speech for a meeting of your local council." },
-        { tag: "Live Nov 2017", text: "'Education is not just about which school you go to, or what qualifications you gain; it is also about what you learn outside school.' Write a speech for Leavers' Day." },
-        { tag: "Statement Nov 2020", text: "'Cars are noisy, dirty, smelly and dangerous. They should be banned from town and city centres.' Write a speech for a public meeting." },
-        { tag: "Statement June 2019", text: "'Fame should belong to skill, courage and determination, not looks, money or bad behaviour.' Write a speech for assembly." },
-        { tag: "Statement June 2017", text: "'Parents today are over-protective. They should let children take part in adventurous, even risky, activities.' Write a speech to parents." },
-        { tag: "Statement June 2018", text: "'Sport should be fun, fair and open to everyone, not money, corruption and winning at any cost.' Write a speech for a sports awards evening." },
-        { tag: "Statement Nov 2019", text: "'People protest about captivity, but eat meat, keep pets and visit zoos. All animals should be free!' Write a speech for a debating club." },
-        { tag: "Statement Nov 2021", text: "'People are obsessed with travelling further and faster. Travel can be expensive, dangerous and a waste of time.' Write a speech for a travel society." },
-        { tag: "Statement June 2022", text: "'Holidays don't need to be faraway and expensive. They just need to be a break.' Write a speech for assembly." },
-        { tag: "Statement Nov 2022", text: "'Teenagers learn and sleep differently. Education needs a radical re-think.' Write a speech to governors." }
-      ],
-      article: [
-        { tag: "Live June 2022", text: "'Holidays don't need to be faraway and expensive. They just need to give people a break.' Write a magazine article." },
-        { tag: "Live Nov 2021", text: "'Cheap clothes mean young people in poorer countries work in terrible conditions. We must change how we buy.' Write an article for a magazine or website." },
-        { tag: "Live Nov 2020", text: "'Travelling further and faster can be expensive, dangerous and a foolish waste!' Write an article for a news website." },
-        { tag: "Live Nov 2019", text: "'People protest about captivity, but eat meat, keep pets and visit zoos.' Write a magazine article." },
-        { tag: "Live June 2018", text: "'Sport should be fun, fair and open, not money, corruption and winning at any cost.' Write a newspaper article." },
-        { tag: "Live June 2017", text: "'Parents today are over-protective and should allow adventurous, even risky, activities.' Write a broadsheet article." },
-        { tag: "Statement June 2022", text: "'Cars are convenient, but we should use them less by making public transport cheaper and more reliable.' Write a local newspaper article." },
-        { tag: "Statement Nov 2022", text: "'Teenagers need sleep at different times. Education needs a re-think.' Write a Sunday newspaper article." },
-        { tag: "Statement June 2019", text: "'Fame should follow skill and courage, not looks or bad behaviour.' Write an online magazine article." },
-        { tag: "Statement Nov 2020", text: "'Cars should be banned from town and city centres.' Write a broadsheet article." }
-      ],
-      letter: [
-        { tag: "Live June 2019", text: "'Fame should belong to skill, courage and determination, not looks, money or bad behaviour!' Write a letter to a newspaper editor." },
-        { tag: "Live Nov 2022", text: "'Teenagers learn and sleep differently. Education needs a radical re-think.' Write a letter to the Minister for Education." },
-        { tag: "Live Nov 2020", text: "'Cars should be banned from town and city centres so people can walk and cycle.' Write a letter to the Minister for Transport." },
-        { tag: "Statement June 2017", text: "'Parents are over-protective and should allow risk.' Write a letter to your headteacher." },
-        { tag: "Statement June 2018", text: "'Sport should be fun, fair and open.' Write a letter to a sports-day organiser." },
-        { tag: "Statement Nov 2019", text: "'Zoos, pets and meat cannot all be defended at once!' Write a letter to a zoo director." },
-        { tag: "Statement Nov 2020", text: "'Further and faster travel is a waste.' Write a letter to a travel company." },
-        { tag: "Statement Nov 2021", text: "'We must change our attitude to buying clothes.' Write a letter to a fashion-magazine editor." },
-        { tag: "Statement June 2022", text: "'A holiday only needs to be a break.' Write a letter to a holiday-company director." },
-        { tag: "Statement Nov 2022", text: "'Use cars less. Make public transport cheaper, reliable and easy to reach.' Write a letter to the council leader." }
-      ],
-      leaflet: [
-        { tag: "Exam-style 2020 theme", text: "Write a leaflet persuading residents to back a daytime ban on through-traffic so the town centre can be walked." },
-        { tag: "Exam-style 2022 theme", text: "Write a leaflet advising families what to ask the council for: a cheaper, reliable bus network." },
-        { tag: "Exam-style 2021 theme", text: "Write a leaflet for teenagers on buying fewer cheap clothes, with one practical swap." },
-        { tag: "Exam-style 2017 theme", text: "Write a leaflet for parents on one adventurous activity done safely." },
-        { tag: "Exam-style 2018 theme", text: "Write a leaflet for a sports club promising a season that is fun, fair and open." },
-        { tag: "Exam-style Nov 2019 theme", text: "Write a leaflet for zoo visitors on one change to ask for this week." },
-        { tag: "Exam-style 2020 theme", text: "Write a leaflet arguing a slower, nearer trip can be the better holiday." },
-        { tag: "Exam-style June 2022 theme", text: "Write a leaflet for families planning a low-cost break that is actually a break." },
-        { tag: "Exam-style Nov 2022 theme", text: "Write a leaflet for students on protecting sleep in exam term." },
-        { tag: "Exam-style June 2017 theme", text: "Write a leaflet for leavers on three things a good education includes that a certificate does not." }
-      ],
-      essay: [
-        { tag: "Exam-style June 2022", text: "'Cars are convenient. We should still use them less!' Write an essay giving your views." },
-        { tag: "Exam-style Nov 2020", text: "'Town centres should be closed to cars!' Write an essay giving your views." },
-        { tag: "Exam-style June 2017", text: "'Parents today are over-protective.' Write an essay giving your views." },
-        { tag: "Exam-style June 2018", text: "'Sport should be fun, fair and open to everyone.' Write an essay giving your views." },
-        { tag: "Exam-style June 2019", text: "'Fame should be earned, not bought or stumbled into.' Write an essay giving your views." },
-        { tag: "Exam-style Nov 2019", text: "'All animals should be free!' Write an essay giving your views." },
-        { tag: "Exam-style Nov 2020", text: "'Travelling further and faster is a foolish waste!' Write an essay giving your views." },
-        { tag: "Exam-style Nov 2021", text: "'We must change how we buy clothes.' Write an essay giving your views." },
-        { tag: "Exam-style June 2022", text: "'A holiday only needs to be a break.' Write an essay giving your views." },
-        { tag: "Exam-style Nov 2017", text: "'A good education is more than qualifications.' Write an essay giving your views." }
-      ]
-    };
-
-    // FORMULA LAB DATA
     const formatData = {
       speech: {
         title: "1. SPEECH BLUEPRINT",
@@ -780,451 +513,575 @@
           { label: "5. CONCLUSION", sub: "Final Call to Action" }
         ],
         paragraphs: [
-          {
-            name: "SECTION 1: INTRODUCTION & AUDIENCE HOOK",
-            purpose: "Nail AO5 Form Anchor line 1 by directly engaging the hall.",
-            formula: "Formal Greeting + Direct Address ('you/we') + Rhetorical Question",
-            template: "Members of the council, esteemed guests, and fellow residents: look outside this hall right now. What do you see? You see a gridlocked graveyard of idling engines..."
-          },
-          {
-            name: "SECTION 2: CORE ARGUMENT & PACING STACK",
-            purpose: "Demonstrate AO6 sentence variety and introduce the core problem.",
-            formula: "3-Sentence Stack: Complex (Long) -> Compound (Mid) -> Minor (1-3 Words)",
-            template: "While personal vehicles undoubtedly offer immediate individual convenience, our unyielding reliance on them is systematically choking our community. We commute daily in isolated metal boxes, yet we ignore the collective price. Unacceptable."
-          },
-          {
-            name: "SECTION 3: COUNTER-ARGUMENT & REFUTATION",
-            purpose: "Secure AO5 Level 4 Cohesion by neutralizing opponent claims.",
-            formula: "The Pivot Bridge: Granted [Opposing View]; nevertheless, [Refutation]",
-            template: "Granted, opponents will argue that private car ownership is a personal right that saves time; nevertheless, individual privilege must never override our shared public health."
-          },
-          {
-            name: "SECTION 4: PRACTICAL SOLUTION & EXPLANATION",
-            purpose: "Execute high-level AO6 punctuation for logical impact.",
-            formula: "The Colon Rule: [Independent Statement] : [Direct Cause/Clarification]",
-            template: "The true barrier to green travel is not driver stubbornness: public buses arrive late, charge extortionate fares, and offer abysmal route coverage."
-          },
-          {
-            name: "SECTION 5: CONCLUSION & FINAL CALL TO ACTION",
-            purpose: "Leave a memorable impression and deliver a decisive summary statement.",
-            formula: "Repetitive Triples + Direct Imperative Command to the Audience",
-            template: "Lower the fares. Expand the routes. Modernize the fleet. Give this town a public transit network it can actually rely on—before our streets come to a permanent standstill."
-          }
+          { name: "SECTION 1: INTRODUCTION & AUDIENCE HOOK", purpose: "Nail AO5 Form Anchor line 1 by directly engaging the hall.", formula: "Formal Greeting + Direct Address + Rhetorical Question", template: "Members of the council, esteemed guests, and fellow residents: look outside this hall right now. What do you see?" },
+          { name: "SECTION 2: CORE ARGUMENT", purpose: "Demonstrate AO6 sentence variety.", formula: "3-Sentence Stack", template: "While personal vehicles offer individual convenience, our reliance on them is choking our community. Unacceptable." },
+          { name: "SECTION 3: COUNTER-ARGUMENT", purpose: "Secure AO5 Cohesion.", formula: "The Pivot Bridge", template: "Granted, opponents argue car ownership saves time; nevertheless, public health must come first." },
+          { name: "SECTION 4: SOLUTION", purpose: "Execute high-level punctuation.", formula: "The Colon Rule", template: "The true barrier is clear: public buses arrive late and charge extortionate fares." },
+          { name: "SECTION 5: CONCLUSION", purpose: "Call to action.", formula: "Triples + Direct Imperative", template: "Lower fares. Expand routes. Modernize the fleet." }
         ]
       },
       article: {
         title: "2. ARTICLE BLUEPRINT",
         icon: "📰",
-        desc: "High-level macro flow & paragraph drill-down for publication pieces.",
+        desc: "High-level macro flow for publication pieces.",
         macro: [
-          { label: "1. HEADLINE + STRAP", sub: "Visual Anchor" },
-          { label: "2. PROVOCATIVE HOOK", sub: "Anecdote / Scene" },
-          { label: "3. SYSTEMIC ISSUE", sub: "3-Sentence Stack" },
-          { label: "4. THE PIVOT", sub: "Refute Opposition" },
-          { label: "5. TAKEAWAY", sub: "Final Thought / Punchline" }
+          { label: "1. HEADLINE", sub: "Catchy Title" },
+          { label: "2. STRAPLINE", sub: "Subheading Hook" },
+          { label: "3. CONTEXT", sub: "Current Crisis" },
+          { label: "4. ANALYSIS", sub: "Deeper Evidence" },
+          { label: "5. CALL TO ACTION", sub: "Final Thought" }
         ],
         paragraphs: [
-          {
-            name: "SECTION 1: HEADLINE, STRAPLINE & OPENING HOOK",
-            purpose: "Establish visual newspaper/magazine layout triggers immediately.",
-            formula: "PUNCHY HEADLINE (Caps) + Subheading Strapline + Provocative Hook",
-            template: "SILENT ROADS, LOUD MINDS\nWhy Our Daily Commute Is Choking Our Future\n\nEvery morning, thousands of commuters sit trapped in isolated metal boxes..."
-          },
-          {
-            name: "SECTION 2: SYSTEMIC ANALYSIS",
-            purpose: "Build dramatic momentum using syntactic variety.",
-            formula: "3-Sentence Stack (Complex -> Compound -> Minor) + Subheading",
-            template: "THE REAL COST OF CAR CULTURE\nAlthough private cars offer individual convenience, they destroy our local air quality. We commute in silence, yet we ignore the collective damage. Unforgivable."
-          },
-          {
-            name: "SECTION 3: CRITIQUE & PIVOT",
-            purpose: "Show sophisticated argument structure.",
-            formula: "The Pivot Bridge (`Granted... nevertheless...`)",
-            template: "Granted, critics claim public transit is too slow for modern routines; nevertheless, continuing our total dependence on fossil-fuel travel is environmental suicide."
-          },
-          {
-            name: "SECTION 4: DEEPER INSIGHT",
-            purpose: "Demonstrate high-precision colon usage.",
-            formula: "The Colon Rule (`Statement : Clarification`)",
-            template: "The solution requires more than empty promises: local government must heavily subsidize fares to make green travel the obvious economic choice."
-          },
-          {
-            name: "SECTION 5: CONCLUDING VISION",
-            purpose: "End with a memorable final thought or call to reader action.",
-            formula: "Circular reference to Headline/Hook + Punchline",
-            template: "We can continue idling in silence, or we can build cities worth moving through. The choice is ours."
-          }
+          { name: "SECTION 1: HEADLINE & STRAPLINE", purpose: "Establish publication format immediately.", formula: "Alliterative / Punchy Title + Descriptive Strapline", template: "DISPOSABLE CLOTHES, PERMANENT DAMAGE\nWhy our obsession with cheap trends is quietly destroying the planet." },
+          { name: "SECTION 2: CONTEXT OPENING", purpose: "Detail the current situation with a vivid scene or statistic.", formula: "Vivid Scene + Colon Rule Clarification", template: "Every Saturday, high streets swell with shoppers hunting the next bargain. The barrier is clear: a T-shirt that costs less than a coffee cannot be produced without environmental and human cost." },
+          { name: "SECTION 3: DEEPER ANALYSIS", purpose: "Develop the argument with evidence and sentence variety.", formula: "3-Sentence Rhythm Stack + Specific Evidence", template: "While brands celebrate ‘affordable style’, rivers in manufacturing regions run the colour of the season’s latest dye. Factories discard millions of unsold garments each year; landfills overflow with last month’s trends. Disposable." },
+          { name: "SECTION 4: COUNTER & NUANCE", purpose: "Acknowledge complexity then redirect.", formula: "Pivot Bridge (Granted… Nevertheless…)", template: "Granted, not every family can afford premium sustainable brands. Nevertheless, choosing quality over quantity, repairing rather than replacing, and questioning the need for weekly novelty remain within reach." },
+          { name: "SECTION 5: CALL TO ACTION / CLOSE", purpose: "Leave the reader with a clear final thought.", formula: "Quiet Imperative + Final Image", template: "The next time a bargain flashes on your screen, pause. Ask who paid the real price. Our wardrobes do not need to be built on waste." }
         ]
       },
       letter: {
         title: "3. FORMAL LETTER BLUEPRINT",
         icon: "✉️",
-        desc: "High-level macro flow & paragraph drill-down for official correspondence.",
+        desc: "Official formal correspondence.",
         macro: [
-          { label: "1. HEADER & RE:", sub: "Formal Anchor" },
-          { label: "2. REASON FOR LETTER", sub: "Clear Stance" },
-          { label: "3. EVIDENCE & STACK", sub: "Impact Analysis" },
-          { label: "4. REBUTTAL", sub: "The Pivot Bridge" },
-          { label: "5. ACTION & SIGN-OFF", sub: "Yours faithfully/sincerely" }
+          { label: "1. HEADER", sub: "Salutation & RE:" },
+          { label: "2. PURPOSE", sub: "Clear Stance" },
+          { label: "3. ARGUMENT", sub: "Key Evidence" },
+          { label: "4. REBUTTAL", sub: "Counter-point" },
+          { label: "5. SIGN-OFF", sub: "Yours Sincerely" }
         ],
         paragraphs: [
-          {
-            name: "SECTION 1: FORMAL ADDRESS & SUBJECT LINE",
-            purpose: "Signal immediate understanding of professional letter formatting.",
-            formula: "Recipient Address Block + Salutation + Subject Line (RE:)",
-            template: "The Local Transport Committee\nCouncil Headquarters\n\nDear Committee Members,\n\nRE: PROPOSAL FOR FREE URBAN PUBLIC TRANSPORT"
-          },
-          {
-            name: "SECTION 2: STATEMENT OF PURPOSE",
-            purpose: "Outline the core grievance or objective objectively.",
-            formula: "Formal State-of-Intent Opening + Primary Thesis",
-            template: "I am writing to formally urge the council to restructure our local transit subsidies before urban congestion permanently damages our local economy."
-          },
-          {
-            name: "SECTION 3: EVIDENCE & IMPACT",
-            purpose: "Control pacing while outlining consequences.",
-            formula: "3-Sentence Stack + Colon Rule (`Statement : Impact`)",
-            template: "While private vehicle access remains convenient, its collective environmental toll is disastrous. We fund road repairs, yet we neglect public rail. Short-sighted. The outcome is clear: suffocating emissions and gridlocked high streets."
-          },
-          {
-            name: "SECTION 4: POLICY COUNTER-ARGUMENT",
-            purpose: "Engage with administrative objections respectfully.",
-            formula: "The Pivot Bridge (`Granted... nevertheless...`)",
-            template: "Granted, budgetary constraints limit immediate capital expenditure; nevertheless, long-term public health savings will vastly outweigh initial transit investments."
-          },
-          {
-            name: "SECTION 5: DEMANDS & SIGN-OFF",
-            purpose: "Provide formal sign-off matching the opening salutation.",
-            formula: "Actionable Recommendations + Formal Valediction ('Yours faithfully')",
-            template: "I look forward to hearing your plan of action at the upcoming committee meeting.\n\nYours faithfully,\n\n[Candidate Name]"
-          }
+          { name: "SECTION 1: FORMAL HEADER & SALUTATION", purpose: "Establish professional address and clear purpose.", formula: "Formal Salutation + Purpose Statement", template: "Dear Sir/Madam,\n\nI am writing to express my concern regarding the corrosive influence of modern celebrity culture on young people." },
+          { name: "SECTION 2: CORE CONCERN", purpose: "Present the main argument with controlled rhythm.", formula: "3-Sentence Rhythm Stack", template: "While fame once rewarded talent or achievement, it now rewards controversy and constant self-exposure. Social media has turned ordinary lives into spectacles; influencers earn fortunes simply by existing in public. Shallow." },
+          { name: "SECTION 3: EVIDENCE & EXAMPLE", purpose: "Support the claim with precise detail.", formula: "Colon Rule + Specific Consequence", template: "The danger is clear: teenagers increasingly measure their worth by likes and followers, and mental-health services report rising cases of anxiety linked to online comparison." },
+          { name: "SECTION 4: BALANCED COUNTER", purpose: "Acknowledge opposing views then strengthen the central claim.", formula: "Pivot Bridge", template: "Granted, public figures can inspire positive change and highlight important causes. Nevertheless, when fame itself becomes the goal rather than the by-product of meaningful work, society loses its sense of proportion." },
+          { name: "SECTION 5: CLOSE & SIGN-OFF", purpose: "End with a formal request and correct close.", formula: "Formal Request + Closing Formula", template: "I urge your newspaper to examine this issue more critically.\n\nYours faithfully," }
         ]
       },
       leaflet: {
         title: "4. LEAFLET BLUEPRINT",
         icon: "📋",
-        desc: "High-level macro flow & paragraph drill-down for informative guides.",
+        desc: "Informative and persuasive public guide layout.",
         macro: [
-          { label: "1. MAIN TITLE", sub: "Bold Header" },
-          { label: "2. THE CRISIS", sub: "Overview Section" },
-          { label: "3. ACTIONABLE STEPS", sub: "Bulleted List" },
-          { label: "4. MYTH BUSTING", sub: "The Pivot Bridge" },
-          { label: "5. CONTACT / CALL", sub: "Final Impulse" }
+          { label: "1. BANNER", sub: "Main Heading" },
+          { label: "2. OVERVIEW", sub: "What You Need to Know" },
+          { label: "3. KEY TIPS", sub: "Benefits" },
+          { label: "4. ADDRESS CONCERNS", sub: "Counter-point" },
+          { label: "5. CALL TO ACTION", sub: "Clear Next Step" }
         ],
         paragraphs: [
-          {
-            name: "SECTION 1: TITLE & COVERAGE SLOGAN",
-            purpose: "Catch consumer attention with structured visual presentation.",
-            formula: "BOLD MAIN TITLE + Subtitle Slogan",
-            template: "CLEAN AIR NOW: A COMMUNITY GUIDE TO GREEN TRAVEL\nSmall Changes, Massive Impact"
-          },
-          {
-            name: "SECTION 2: WHY CHANGE IS URGENT",
-            purpose: "Explain the situational context clearly.",
-            formula: "Section Subheading + 3-Sentence Stack",
-            template: "THE CRISIS ON OUR STREETS\nAlthough driving feels effortless, it pollutes the air our children breathe. We commute in isolation, yet we all pay the price. Devastating."
-          },
-          {
-            name: "SECTION 3: ACTIONABLE COMMUNITY STEPS",
-            purpose: "Provide structured, reader-friendly bullet points.",
-            formula: "Subheading + Bulleted Imperative Directives",
-            template: "HOW YOU CAN HELP TODAY:\n• Use local bus routes for weekday commutes\n• Cycle or walk for journeys under two miles\n• Join local car-pooling schemes"
-          },
-          {
-            name: "SECTION 4: COMMON MYTHS BUSTED",
-            purpose: "Address reader reluctance using structural contrast.",
-            formula: "The Pivot Bridge (`Granted... nevertheless...`) + Colon Rule",
-            template: "Granted, public transit can feel inconvenient; nevertheless, modern app tracking makes routes predictable: live timetables eliminate guesswork."
-          },
-          {
-            name: "SECTION 5: CONTACT & NEXT STEPS",
-            purpose: "Provide practical wrap-up information.",
-            formula: "Summary Call to Action + Contact Info Header",
-            template: "GET INVOLVED: Visit our portal to claim your free weekly bus pass and join the movement."
-          }
+          { name: "SECTION 1: MAIN BANNER & SUBHEADING", purpose: "Grab attention with a clear benefit-focused title.", formula: "Bold Banner + Benefit Strapline", template: "RECLAIM OUR STREETS\nSafe cycle lanes mean cleaner air, healthier lives and quieter roads for everyone." },
+          { name: "SECTION 2: WHY IT MATTERS", purpose: "State the problem and the solution clearly.", formula: "Problem Statement + Colon Rule", template: "Every morning, traffic grinds to a halt outside our schools. The solution is simple: protected cycle lanes would take hundreds of short car journeys off the road." },
+          { name: "SECTION 3: KEY BENEFITS", purpose: "List concrete advantages with impact.", formula: "Imperative Triad + Supporting Fact", template: "Breathe cleaner air. Save money on fuel. Arrive at work with energy. Studies show that towns with safe cycling infrastructure reduce congestion by up to 20%." },
+          { name: "SECTION 4: ADDRESS CONCERNS", purpose: "Acknowledge objections then reassure.", formula: "Pivot Bridge", template: "Granted, some residents worry about parking. Nevertheless, well-designed lanes free up space, reduce illegal parking outside schools, and make the town centre more pleasant for everyone." },
+          { name: "SECTION 5: CALL TO ACTION", purpose: "Give clear, concrete next steps.", formula: "Multi-part Action Close", template: "Sign the petition outside the library this weekend. Email your councillor. Demand better. Our streets belong to all of us — not just to cars." }
         ]
       },
       essay: {
         title: "5. FORMAL ESSAY BLUEPRINT",
         icon: "📝",
-        desc: "High-level macro flow & paragraph drill-down for academic arguments.",
+        desc: "Structured academic argumentation.",
         macro: [
-          { label: "1. THESIS STATEMENT", sub: "Academic Context" },
-          { label: "2. ARGUMENT 01", sub: "Structural Proof" },
-          { label: "3. ARGUMENT 02", sub: "3-Sentence Stack" },
-          { label: "4. COUNTER-THESIS", sub: "The Pivot Bridge" },
-          { label: "5. CONCLUSION", sub: "Synthesis" }
+          { label: "1. THESIS", sub: "Formal Opening" },
+          { label: "2. PERSPECTIVE A", sub: "Primary Factor" },
+          { label: "3. PERSPECTIVE B", sub: "Systemic View" },
+          { label: "4. EVALUATION", sub: "Critical Synthesis" },
+          { label: "5. CONCLUSION", sub: "Final Thesis Reaffirmation" }
         ],
         paragraphs: [
+          { name: "SECTION 1: THESIS STATEMENT", purpose: "Establish a clear, arguable position.", formula: "Context + Direct Thesis", template: "In recent years, the ubiquity of social media platforms has transformed human interaction. While these tools offer connection and information, their overall impact on mental health, attention and public discourse is more harmful than beneficial." },
+          { name: "SECTION 2: FIRST MAIN ARGUMENT", purpose: "Develop the primary claim with controlled sentence variety.", formula: "3-Sentence Rhythm Stack + Example", template: "Although platforms claim to connect people, constant comparison erodes self-worth. Teenagers report higher levels of anxiety after prolonged use; algorithms reward outrage over accuracy. Isolating." },
+          { name: "SECTION 3: SECOND ARGUMENT WITH EVIDENCE", purpose: "Introduce a systemic or structural point.", formula: "Colon Rule + Mechanism", template: "The structural problem is clear: algorithms prioritise engagement over truth, so misinformation spreads faster than corrections and polarised communities form around shared outrage." },
+          { name: "SECTION 4: COUNTER-ARGUMENT & REBUTTAL", purpose: "Acknowledge opposing views then outweigh them.", formula: "Pivot Bridge + Evaluation", template: "Granted, social media can mobilise support for important causes and keep families in touch across distances. Nevertheless, these benefits do not outweigh the documented rise in anxiety, the fragmentation of shared reality, and the commercial exploitation of attention." },
+          { name: "SECTION 5: CONCLUSION", purpose: "Synthesise and reaffirm the thesis with finality.", formula: "Synthesis + Final Judgement", template: "Social media is neither neutral nor inevitable. Its current design prioritises profit over wellbeing. Until that changes, its harms outweigh its benefits." }
+        ]
+      }
+    };
+
+    const paper1ModelAnswers = {
+      narrative: {
+        prompt: "Write a story about a journey as suggested by a night-time empty road (car headlights, distant mountains, starry sky).",
+        title: "MODEL NARRATIVE: THE NIGHT JOURNEY",
+        sections: [
           {
-            name: "SECTION 1: ACADEMIC THESIS STATEMENT",
-            purpose: "Establish objective, authoritative stance in line 1.",
-            formula: "Formal Contextual Opening + Objective Thesis",
-            template: "It is increasingly argued that modern urban planning must prioritize public transport over private vehicle access. While critics emphasize personal freedom, a rigorous analysis reveals that environmental sustainability demands structural reform."
+            macro: "MACRO STAGE 1: MICRO-ZOOM OPENING",
+            pFormula: "Microscopic Object Focus + Dynamic Verb + Atmospheric Setup",
+            text: [
+              { content: "A single hairline crack ran down the glass of the speedometer, vibrating in rhythm with the engine as the headlights carved a narrow corridor through the dark.", powerup: "MICRO-ZOOM OPENER", note: "Hooks on an isolated object while establishing the night road setting." }
+            ]
           },
           {
-            name: "SECTION 2: PRIMARY ARGUMENT (ENVIRONMENTAL)",
-            purpose: "Develop main line of reasoning with advanced punctuation.",
-            formula: "Topic Sentence + Colon Rule (`Statement : Explanation`)",
-            template: "The primary justification for transit reform is environmental safety: unchecked urban vehicle emissions directly correlate with rising respiratory illnesses across municipal populations."
+            macro: "MACRO STAGE 2: ESTABLISHING MOOD & BACKSTORY",
+            pFormula: "Pathetic Fallacy + Interior Monologue + 3-Sentence Rhythm Stack",
+            text: [
+              { content: "The wind tore across the barren ridge, stripping the heather bare. She pulled her collar tight. Nowhere to run.", powerup: "3-SENTENCE RHYTHM STACK", note: "Builds tension and character perspective with varied syntax." }
+            ]
           },
           {
-            name: "SECTION 3: SECONDARY ARGUMENT (ECONOMIC)",
-            purpose: "Vary sentence length for sustained examiner engagement.",
-            formula: "3-Sentence Stack (Complex -> Compound -> Minor)",
-            template: "While car ownership offers immediate individual mobility, it imposes severe collective financial burdens. Councils spend millions repairing road wear, yet they underfund clean rail links. Unaffordable."
+            macro: "MACRO STAGE 3: THE INCITING INCIDENT / CLIMAX",
+            pFormula: "Colon Rule + Short Declarative Burst",
+            text: [
+              { content: "Then the road ahead narrowed without warning: a figure stepped from the verge into the full beam of the headlights.", powerup: "COLON RULE", note: "Delivers peak tension with precise structural clarification and pace." }
+            ]
           },
           {
-            name: "SECTION 4: COUNTER-THESIS EVALUATION",
-            purpose: "Demonstrate high-level critical thinking.",
-            formula: "The Pivot Bridge (`Granted... nevertheless...`)",
-            template: "Granted, opponents contend that transit infrastructure requires unviable initial tax expenditure; nevertheless, economic modeling proves that reduced traffic congestion boosts overall commercial productivity."
+            macro: "MACRO STAGE 4: FALLING ACTION & AFTERMATH",
+            pFormula: "Fragmented Syntax + Visceral Sensory Detail",
+            text: [
+              { content: "Silence rushed back into the car. Her pulse drummed against her ribs. The figure was already gone.", powerup: "FRAGMENTED AFTERMATH", note: "Processes the immediate physical and emotional reaction through controlled fragments." }
+            ]
           },
           {
-            name: "SECTION 5: SYNTHESIS & FINAL JUDGMENT",
-            purpose: "Summarize without simple repetition.",
-            formula: "Synthesis of Points + Decisive Concluding Evaluation",
-            template: "In conclusion, prioritizing public transport is not an attack on individual convenience, but an inevitable necessity for sustainable civilization."
+            macro: "MACRO STAGE 5: CYCLIC CLOSE",
+            pFormula: "Echo Opening Image + Final Philosophical Punchline",
+            text: [
+              { content: "Another hairline crack shivered across the speedometer glass. The road remained open ahead of her, but the fear had finally loosened its grip.", powerup: "CYCLIC MIRROR CLOSE", note: "Returns to the micro image with changed emotional weight." }
+            ]
+          }
+        ]
+      },
+      descriptive: {
+        prompt: "Write a description of a forest.",
+        title: "MODEL DESCRIPTION: THE ANCIENT WOODLAND",
+        sections: [
+          {
+            macro: "MACRO STAGE 1: EXTREME CLOSE-UP",
+            pFormula: "Adverbial Starter + Textural Adjectives + Metaphor",
+            text: [
+              { content: "Deep within the bark of an ancient oak, a drop of golden resin quivered before falling into the damp soil.", powerup: "MICRO-ZOOM OPENER", note: "Anchors vision on tiny texture and material." }
+            ]
+          },
+          {
+            macro: "MACRO STAGE 2: MID-RANGE PANNING",
+            pFormula: "Colon Rule + Auditory Layering",
+            text: [
+              { content: "The forest encroached from all sides: ancient oaks groaning under blankets of grey moss, their branches whispering against one another in the rising wind.", powerup: "COLON RULE + AUDITORY", note: "Expands the field of vision while layering sound." }
+            ]
+          },
+          {
+            macro: "MACRO STAGE 3: MACRO PANORAMA",
+            pFormula: "3-Sentence Stack (Complex → Compound → Minor)",
+            text: [
+              { content: "Mist choked the valley floor, swallowing distant peaks whole. Light struggled to pierce the canopy. Suffocating.", powerup: "3-SENTENCE RHYTHM STACK", note: "Creates scale and atmosphere through rhythmic variation." }
+            ]
+          },
+          {
+            macro: "MACRO STAGE 4: SHADOW & COLOUR CONTRAST",
+            pFormula: "Juxtaposition of Colour Hues + Kinetic Verbs",
+            text: [
+              { content: "Streaks of bruised purple pierced the charcoal clouds, staining the wet trunks blood-red where the light briefly caught them.", powerup: "COLOUR JUXTAPOSITION", note: "Introduces dramatic sensory contrast to animate the static setting." }
+            ]
+          },
+          {
+            macro: "MACRO STAGE 5: FINAL SNAPSHOT",
+            pFormula: "Single Isolated Sentence + Auditory Fade-Out",
+            text: [
+              { content: "Then, the wind died, leaving only the steady drip of rainwater echoing into the night.", powerup: "QUIET RESOLUTION", note: "Leaves a lingering sensory image." }
+            ]
           }
         ]
       }
     };
 
-    // MODEL ANSWERS DATA
     const modelAnswers = {
       speech: {
-        prompt: "Write a speech to be given at a meeting of your local council in which you argue that public transport must be made cheaper and more reliable.",
-        title: "MODEL SPEECH: COUNCIL TRANSPORT DEBATE",
+        prompt: "Write a speech for a meeting of your local council arguing that public transport must be made cheaper and more frequent.",
+        title: "MODEL SPEECH: COUNCIL TRANSPORT",
         sections: [
           {
-            macro: "MACRO STAGE 1: AUDIENCE HOOK & FORMAL ANCHOR",
-            pFormula: "Formal Greeting + Direct Address ('you/we') + Rhetorical Question",
+            macro: "MACRO STAGE 1: OPENING HOOK",
+            pFormula: "Formal Greeting + Rhetorical Question",
             text: [
-              { content: "Members of the council, esteemed guests, and fellow residents: look outside this hall right now.", powerup: null, note: "AO5 Form Anchor: Direct oral salutation establishing room setup." },
-              { content: "What do you see?", powerup: "DAREST: Rhetorical Question", note: "Engages the audience immediately with direct question." },
-              { content: "You see a gridlocked graveyard of idling engines, puffing toxic fumes directly into the air our children breathe daily.", powerup: "DAREST: Direct Address & Emotive Imagery", note: "Paints a vivid picture for council members." }
+              { content: "Members of the council, look outside this hall right now. What do you see? Rows of idling cars choking our high street, their engines coughing fumes into the air our children breathe.", powerup: "DAREST", note: "Direct address + rhetorical question to seize attention." }
             ]
           },
           {
-            macro: "MACRO STAGE 2: CORE PROBLEM ANALYSIS",
-            pFormula: "3-Sentence Stack: Complex (Long) -> Compound (Mid) -> Minor (Short)",
+            macro: "MACRO STAGE 2: CORE PROBLEM",
+            pFormula: "3-Sentence Rhythm Stack",
             text: [
-              { content: "While personal vehicles undoubtedly offer immediate individual convenience, our unyielding reliance on them is systematically choking our community.", powerup: "POWER-UP 02 (Sentence 1: Long Complex)", note: "Sets up high-level sentence structure." },
-              { content: "We commute daily in isolated metal boxes, yet we ignore the catastrophic collective price.", powerup: "POWER-UP 02 (Sentence 2: Mid Compound)", note: "Maintains cadence and expands argument." },
-              { content: "Unacceptable.", powerup: "POWER-UP 02 (Sentence 3: Minor Sentence / DAREST Emotive)", note: "Dramatic single-word punctuation punch." },
-              { content: "The true cost of our convenience is clear: rising asthma rates, ruined urban spaces, and total environmental decay.", powerup: "POWER-UP 01 (The Colon Rule)", note: "Independent Statement : Direct list/explanation." }
+              { content: "While personal vehicles offer individual convenience, our reliance on them is choking our community. Buses crawl through gridlock; fares have risen by thirty percent in five years. Unacceptable.", powerup: "3-SENTENCE STACK", note: "Complex → compound → minor for rhythmic control." }
             ]
           },
           {
-            macro: "MACRO STAGE 3: COUNTER-ARGUMENT & REFUTATION",
-            pFormula: "The Pivot Bridge: Granted [Opposing View]; nevertheless, [Refutation]",
+            macro: "MACRO STAGE 3: CONTEXT & EVIDENCE",
+            pFormula: "Colon Rule + Specific Detail",
             text: [
-              { content: "Granted, opponents will argue that private car ownership is a personal right that saves precious time; nevertheless, individual privilege must never override our shared public health.", powerup: "POWER-UP 03 (The Pivot Bridge)", note: "Concedes opponent logic before instantly dismantling it." },
-              { content: "We cannot expect citizens to abandon their cars when public buses arrive late, charge extortionate fares, and offer abysmal coverage.", powerup: "DAREST: Triples / Rule of 3", note: "Builds rhythmic momentum." }
+              { content: "The barrier is clear: a single ticket to the next town now costs more than a family meal, and the last bus leaves before most workers finish their shifts.", powerup: "COLON RULE", note: "Colon delivers precise, structural clarification." }
             ]
           },
           {
-            macro: "MACRO STAGE 4: PRACTICAL SOLUTION & CALL TO ACTION",
-            pFormula: "Repetitive Imperative Directives + Final Concluding Impact",
+            macro: "MACRO STAGE 4: ANALYSIS & COUNTER",
+            pFormula: "Pivot Bridge + Judicious Vocabulary",
             text: [
-              { content: "The solution is not to plead with drivers; it is to build a modern, subsidized, and flawless transit system.", powerup: null, note: "Presents clear policy directive." },
-              { content: "Lower the fares. Expand the routes. Modernize the fleet.", powerup: "DAREST: Triples + Imperative Verbs", note: "Action-oriented command phrasing." },
-              { content: "Give this town a public transport network it can actually rely on—before our streets come to a permanent standstill.", powerup: "AO6 Advanced Punctuation (Em Dash)", note: "Drives home final urgency." }
+              { content: "Granted, cheaper fares will require investment. Nevertheless, the long-term cost of congestion, pollution and social isolation far outweighs the short-term expense.", powerup: "PIVOT BRIDGE", note: "Concedes then redirects with controlled formality." }
+            ]
+          },
+          {
+            macro: "MACRO STAGE 5: CALL TO ACTION",
+            pFormula: "Imperative Triad + Closing Address",
+            text: [
+              { content: "Lower the fares. Increase the frequency. Restore public trust. Members of the council, the choice is yours: act now, or watch our streets seize up forever.", powerup: "IMPERATIVE TRIAD", note: "Three short imperatives for memorable close." }
             ]
           }
         ]
       },
       article: {
-        prompt: "Write an article for a youth magazine about whether car culture is ruining urban spaces.",
-        title: "MODEL ARTICLE: YOUTH MAGAZINE PUBLICATION",
+        prompt: "Write an article for a national newspaper giving your views on fast fashion and consumer sustainability.",
+        title: "MODEL ARTICLE: THE TRUE COST OF THREADS",
         sections: [
           {
-            macro: "MACRO STAGE 1: VISUAL LAYOUT & PROVOCATIVE HOOK",
-            pFormula: "PUNCHY HEADLINE + Subheading Strapline + Anecdotal Hook",
+            macro: "STAGE 1: HEADLINE & STRAPLINE",
+            pFormula: "Headline + Strapline",
             text: [
-              { content: "SILENT ROADS, LOUD MINDS\nWhy Our Daily Commute Is Choking Our Future\nBy Alex Chen", powerup: "AO5 Visual Triggers (Headline + Strapline + Byline)", note: "Proves layout awareness in line 1." },
-              { content: "Every morning, thousands of teenagers sit trapped in backseats, staring through exhaust-smeared glass at gridlocked traffic.", powerup: "DAREST: Emotive Imagery", note: "Sets vivid, relatable scene." },
-              { content: "Is this really the best modern transit can offer?", powerup: "DAREST: Rhetorical Question", note: "Engages youth readership." }
+              { content: "DISPOSABLE CLOTHES, PERMANENT DAMAGE", powerup: "HEADLINE", note: "Striking, all-caps title." },
+              { content: "Why our obsession with cheap trends is quietly destroying the planet.", powerup: "STRAPLINE", note: "Subheading that frames the argument." }
             ]
           },
           {
-            macro: "MACRO STAGE 2: SYSTEMIC ANALYSIS & RHYTHM STACK",
-            pFormula: "Subheading + 3-Sentence Stack (Complex -> Compound -> Minor)",
+            macro: "STAGE 2: CONTEXT OPENING",
+            pFormula: "Scene + Colon Clarification",
             text: [
-              { content: "THE REAL COST OF CAR CULTURE", powerup: "AO5 Visual Trigger (Subheading)", note: "Chunks text into publication format." },
-              { content: "Although private vehicles provide instant personal mobility, they destroy local community spaces.", powerup: "POWER-UP 02 (Sentence 1: Long Complex)", note: "High-level subordinate clause opening." },
-              { content: "We travel in quiet isolation, yet we choke our own high streets with noise.", powerup: "POWER-UP 02 (Sentence 2: Mid Compound)", note: "Balanced contrast sentence." },
-              { content: "Unforgivable.", powerup: "POWER-UP 02 (Sentence 3: Minor Sentence)", note: "Short impact word." },
-              { content: "The outcome of this habit is devastating: polluted air and lifeless town centers.", powerup: "POWER-UP 01 (The Colon Rule)", note: "Statement : Cause relationship." }
+              { content: "Every Saturday, high streets swell with shoppers hunting the next bargain. The barrier is clear: a T-shirt that costs less than a coffee cannot be produced without environmental and human cost.", powerup: "COLON RULE", note: "Scene then precise structural statement." }
             ]
           },
           {
-            macro: "MACRO STAGE 3: THE PIVOT & REFUTATION",
-            pFormula: "The Pivot Bridge (`Granted... nevertheless...`)",
+            macro: "STAGE 3: DEEPER ANALYSIS",
+            pFormula: "3-Sentence Stack + Evidence",
             text: [
-              { content: "Granted, critics claim public buses are too slow for fast-paced student routines; nevertheless, continuing our total dependence on fossil-fuel travel is environmental suicide.", powerup: "POWER-UP 03 (The Pivot Bridge)", note: "AO5 Cohesion marker." }
+              { content: "While brands celebrate ‘affordable style’, rivers in manufacturing regions run the colour of the season’s latest dye. Factories discard millions of unsold garments each year; landfills overflow with last month’s trends. Disposable.", powerup: "3-SENTENCE STACK", note: "Builds rhythm while embedding evidence." }
             ]
           },
           {
-            macro: "MACRO STAGE 4: CONCLUDING VISION",
-            pFormula: "Circular Reference to Title + Final Punchline",
+            macro: "STAGE 4: COUNTER & NUANCE",
+            pFormula: "Pivot Bridge",
             text: [
-              { content: "We can continue idling in silence, or we can demand cities built for people rather than petrol engines.", powerup: "DAREST: Triples / Contrast", note: "Presents stark binary choice." },
-              { content: "The choice belongs to our generation.", powerup: "AO5 Concluding Punchline", note: "Leaves clear memorable impression." }
+              { content: "Granted, not every family can afford premium sustainable brands. Nevertheless, choosing quality over quantity, repairing rather than replacing, and questioning the need for weekly novelty remain within reach.", powerup: "PIVOT BRIDGE", note: "Acknowledges difficulty then redirects." }
+            ]
+          },
+          {
+            macro: "STAGE 5: CALL TO ACTION",
+            pFormula: "Final Thought + Imperative",
+            text: [
+              { content: "The next time a bargain flashes on your screen, pause. Ask who paid the real price. Our wardrobes do not need to be built on waste.", powerup: "CLOSING PUNCH", note: "Quiet but decisive final image." }
             ]
           }
         ]
       },
       letter: {
-        prompt: "Write a formal letter to your local MP arguing for free public transit for young people.",
-        title: "MODEL FORMAL LETTER: OFFICIAL CORRESPONDENCE",
+        prompt: "Write a letter to a newspaper editor giving your views on modern fame and celebrity culture.",
+        title: "MODEL LETTER: CELEBRITY OBSESSION",
         sections: [
           {
-            macro: "MACRO STAGE 1: FORMAL ADDRESS & SUBJECT LINE",
-            pFormula: "Recipient Block + Salutation + Subject Line (RE:)",
+            macro: "STAGE 1: FORMAL HEADER & SALUTATION",
+            pFormula: "Address + Salutation",
             text: [
-              { content: "Office of Sarah Jenkins MP\nHouse of Commons\nLondon, SW1A 0AA\n\nDear Ms. Jenkins,\n\nRE: PROPOSAL FOR FREE YOUTH PUBLIC TRANSPORTATION", powerup: "AO5 Visual Anchor (Letter Address & RE: Line)", note: "Establishes formal letter hierarchy." },
-              { content: "I am writing to formally urge your office to support municipal bus subsidies before youth mobility is permanently crippled by rising costs.", powerup: "AO5 Objective Register", note: "States explicit purpose in sentence 1." }
+              { content: "Dear Sir/Madam,", powerup: "FORMAL HEADING", note: "Correct formal opening." },
+              { content: "I am writing to express my concern regarding the corrosive influence of modern celebrity culture on young people.", powerup: "PURPOSE STATEMENT", note: "Clear purpose in first sentence." }
             ]
           },
           {
-            macro: "MACRO STAGE 2: EVIDENCE & STACK ANALYSIS",
-            pFormula: "3-Sentence Stack + Colon Rule",
+            macro: "STAGE 2: CORE CONCERN",
+            pFormula: "3-Sentence Stack",
             text: [
-              { content: "While private vehicle access remains a luxury for wealthier households, young working-class citizens rely entirely on public networks.", powerup: "POWER-UP 02 (Sentence 1: Long Complex)", note: "Establishes socio-economic context." },
-              { content: "Fares continue to escalate rapidly, yet service reliability declines monthly.", powerup: "POWER-UP 02 (Sentence 2: Mid Compound)", note: "Compound syntax." },
-              { content: "Unjust.", powerup: "POWER-UP 02 (Sentence 3: Minor Sentence)", note: "Single-word evaluation." },
-              { content: "The economic consequences are inescapable: reduced employment opportunities, restricted education access, and growing youth isolation.", powerup: "POWER-UP 01 (The Colon Rule)", note: "Independent Statement : Impact list." }
+              { content: "While fame once rewarded talent or achievement, it now rewards controversy and constant self-exposure. Social media has turned ordinary lives into spectacles; influencers earn fortunes simply by existing in public. Shallow.", powerup: "3-SENTENCE STACK", note: "Controlled rhythm and final minor sentence." }
             ]
           },
           {
-            macro: "MACRO STAGE 3: POLICY COUNTER-ARGUMENT",
-            pFormula: "The Pivot Bridge (`Granted... nevertheless...`)",
+            macro: "STAGE 3: EVIDENCE & EXAMPLE",
+            pFormula: "Colon Rule + Specificity",
             text: [
-              { content: "Granted, parliamentary opponents will cite severe fiscal limitations; nevertheless, investing in youth mobility generates long-term tax revenues that far outweigh initial costs.", powerup: "POWER-UP 03 (The Pivot Bridge)", note: "Formal academic rebuttal." }
+              { content: "The danger is clear: teenagers increasingly measure their worth by likes and followers, and mental-health services report rising cases of anxiety linked to online comparison.", powerup: "COLON RULE", note: "Precise clarification of the problem." }
             ]
           },
           {
-            macro: "MACRO STAGE 4: FORMAL DEMAND & SIGN-OFF",
-            pFormula: "Call to Action + Formal Valediction ('Yours sincerely')",
+            macro: "STAGE 4: BALANCED COUNTER",
+            pFormula: "Pivot Bridge",
             text: [
-              { content: "I urge you to raise this critical motion during the upcoming parliamentary session.", powerup: "AO5 Imperative Formal Request", note: "Direct policy request." },
-              { content: "Yours sincerely,\n\nJordan Smith\nYouth Transport Representative", powerup: "AO5 Formal Valediction", note: "Matches named salutation ('Dear Ms. Jenkins' -> 'Yours sincerely')." }
+              { content: "Granted, public figures can inspire positive change and highlight important causes. Nevertheless, when fame itself becomes the goal rather than the by-product of meaningful work, society loses its sense of proportion.", powerup: "PIVOT BRIDGE", note: "Concedes then strengthens the central claim." }
+            ]
+          },
+          {
+            macro: "STAGE 5: CLOSE & SIGN-OFF",
+            pFormula: "Formal Request + Closing",
+            text: [
+              { content: "I urge your newspaper to examine this issue more critically. Yours faithfully,", powerup: "FORMAL CLOSE", note: "Appropriate formal sign-off after purpose-driven request." }
             ]
           }
         ]
       },
       leaflet: {
-        title: "MODEL LEAFLET: PUBLIC INFORMATIONAL GUIDE",
-        prompt: "Produce a leaflet informing local residents about a new green travel initiative.",
+        prompt: "Write a leaflet persuading local residents to support a new cycling initiative.",
+        title: "MODEL LEAFLET: PEDAL POWER",
         sections: [
           {
-            macro: "MACRO STAGE 1: BOLD TITLE & COVERAGE SLOGAN",
-            pFormula: "MAIN TITLE + Subtitle Slogan",
+            macro: "STAGE 1: BOLD BANNER",
+            pFormula: "Banner Title + Subheading",
             text: [
-              { content: "CLEAN AIR NOW: A COMMUNITY GUIDE TO GREEN TRAVEL\nSmall Daily Choices, Massive Local Impact", powerup: "AO5 Visual Trigger (Leaflet Title Banner)", note: "Prominent visual header." },
-              { content: "Did you know that 60% of urban car journeys are under two miles?", powerup: "DAREST: Statistic & Rhetorical Question", note: "Grabs immediate reader focus." }
+              { content: "RECLAIM OUR STREETS", powerup: "BANNER", note: "Immediate, high-impact title." },
+              { content: "Safe cycle lanes mean cleaner air, healthier lives and quieter roads for everyone.", powerup: "SUBHEADING", note: "Benefit-focused strapline." }
             ]
           },
           {
-            macro: "MACRO STAGE 2: WHY CHANGE IS URGENT",
-            pFormula: "Section Subheading + 3-Sentence Stack",
+            macro: "STAGE 2: WHY IT MATTERS",
+            pFormula: "Problem + Colon Clarification",
             text: [
-              { content: "THE CRISIS ON OUR STREETS", powerup: "AO5 Visual Subheading", note: "Chunks informational sections." },
-              { content: "Although driving short distances feels effortless, it dumps toxic particulate matter right outside local schools.", powerup: "POWER-UP 02 (Sentence 1: Long Complex)", note: "Presents problem." },
-              { content: "We sit in idling traffic, yet our children suffer the respiratory consequences.", powerup: "POWER-UP 02 (Sentence 2: Mid Compound)", note: "Contrast structure." },
-              { content: "Devastating.", powerup: "POWER-UP 02 (Sentence 3: Minor Sentence)", note: "Minor impact sentence." }
+              { content: "Every morning, traffic grinds to a halt outside our schools. The solution is simple: protected cycle lanes would take hundreds of short car journeys off the road.", powerup: "COLON RULE", note: "Clear problem-to-solution structure." }
             ]
           },
           {
-            macro: "MACRO STAGE 3: ACTIONABLE COMMUNITY STEPS",
-            pFormula: "Subheading + Bulleted Directives",
+            macro: "STAGE 3: BENEFITS",
+            pFormula: "Imperative Triad + Evidence",
             text: [
-              { content: "3 WAYS YOU CAN HELP TODAY:\n• Commute by bus at least twice a week\n• Walk or cycle for any trip under 15 minutes\n• Join our subsidized community carpool app", powerup: "AO5 Leaflet Formatting (Bulleted List)", note: "Clear actionable formatting." }
+              { content: "Breathe cleaner air. Save money on fuel. Arrive at work with energy. Studies show that towns with safe cycling infrastructure reduce congestion by up to 20%.", powerup: "IMPERATIVE TRIAD", note: "Short imperatives followed by supporting fact." }
             ]
           },
           {
-            macro: "MACRO STAGE 4: MYTH BUSTING & CONTACT",
-            pFormula: "The Pivot Bridge + Colon Rule + Contact Info",
+            macro: "STAGE 4: ADDRESS CONCERNS",
+            pFormula: "Pivot Bridge",
             text: [
-              { content: "Granted, public buses used to be unreliable; nevertheless, our new live tracking app guarantees real-time bus arrivals: no more waiting in the rain.", powerup: "POWER-UP 03 (Pivot Bridge) + POWER-UP 01 (Colon)", note: "Combined structural power-ups." },
-              { content: "GET INVOLVED: Visit greentravel.org to claim your free £10 transit voucher today!", powerup: "AO5 Call to Action Footer", note: "Practical takeaway." }
+              { content: "Granted, some residents worry about parking. Nevertheless, well-designed lanes free up space, reduce illegal parking outside schools, and make the town centre more pleasant for everyone.", powerup: "PIVOT BRIDGE", note: "Acknowledges objection then reassures." }
+            ]
+          },
+          {
+            macro: "STAGE 5: CALL TO ACTION",
+            pFormula: "Clear Next Step",
+            text: [
+              { content: "Sign the petition outside the library this weekend. Email your councillor. Demand better. Our streets belong to all of us — not just to cars.", powerup: "ACTION CLOSE", note: "Concrete, multi-part call to action." }
             ]
           }
         ]
       },
       essay: {
-        title: "MODEL FORMAL ESSAY: ACADEMIC ARGUMENT",
-        prompt: "'Cars are an outdated luxury.' Write an essay expressing your point of view on this statement.",
+        prompt: "Write an essay giving your views on whether social media does more harm than good.",
+        title: "MODEL ESSAY: THE DIGITAL DILEMMA",
         sections: [
           {
-            macro: "MACRO STAGE 1: ACADEMIC THESIS STATEMENT",
-            pFormula: "Formal Contextual Opening + Objective Thesis",
+            macro: "STAGE 1: THESIS STATEMENT",
+            pFormula: "Clear Stance + Scope",
             text: [
-              { content: "It is increasingly argued that modern urban planning must transition away from private vehicle dependency.", powerup: "AO5 Academic Formal Opening", note: "Establishes scholarly tone." },
-              { content: "While proponents emphasize individual autonomy, a rigorous analysis reveals that unchecked car culture poses an existential threat to urban sustainability.", powerup: "AO5 Objective Thesis", note: "Presents clear argument stance." }
+              { content: "In recent years, the ubiquity of social media platforms has transformed human interaction. While these tools offer connection and information, their overall impact on mental health, attention and public discourse is more harmful than beneficial.", powerup: "THESIS", note: "Direct, arguable thesis in the opening paragraph." }
             ]
           },
           {
-            macro: "MACRO STAGE 2: PRIMARY ARGUMENT (ENVIRONMENTAL)",
-            pFormula: "Topic Sentence + Colon Rule (`Statement : Explanation`)",
+            macro: "STAGE 2: FIRST MAIN ARGUMENT",
+            pFormula: "3-Sentence Stack + Example",
             text: [
-              { content: "The primary justification for structural transit reform is environmental safety: unchecked combustion emissions directly drive toxic air degradation across high-density neighborhoods.", powerup: "POWER-UP 01 (The Colon Rule)", note: "Statement : Direct scientific justification." }
+              { content: "Although platforms claim to connect people, constant comparison erodes self-worth. Teenagers report higher levels of anxiety after prolonged use; algorithms reward outrage over accuracy. Isolating.", powerup: "3-SENTENCE STACK", note: "Controlled rhythm that develops the claim." }
             ]
           },
           {
-            macro: "MACRO STAGE 3: SECONDARY ARGUMENT (ECONOMIC)",
-            pFormula: "3-Sentence Stack (Complex -> Compound -> Minor)",
+            macro: "STAGE 3: SECOND ARGUMENT WITH EVIDENCE",
+            pFormula: "Colon Rule + Specificity",
             text: [
-              { content: "While private vehicles offer perception of convenience, they impose exorbitant collective financial costs on municipal budgets.", powerup: "POWER-UP 02 (Sentence 1: Long Complex)", note: "Introduces economic angle." },
-              { content: "Local councils spend millions repairing tarmac erosion, yet they starve clean electric rail networks of essential funding.", powerup: "POWER-UP 02 (Sentence 2: Mid Compound)", note: "Highlights hypocrisy." },
-              { content: "Irrational.", powerup: "POWER-UP 02 (Sentence 3: Minor Sentence)", note: "Short emphatic conclusion." }
+              { content: "The structural problem is clear: algorithms prioritise engagement over truth, so misinformation spreads faster than corrections and polarised communities form around shared outrage.", powerup: "COLON RULE", note: "Precise structural clarification of the mechanism." }
             ]
           },
           {
-            macro: "MACRO STAGE 4: COUNTER-THESIS & SYNTHESIS",
-            pFormula: "The Pivot Bridge (`Granted... nevertheless...`) + Concluding Synthesis",
+            macro: "STAGE 4: COUNTER-ARGUMENT & REBUTTAL",
+            pFormula: "Pivot Bridge",
             text: [
-              { content: "Granted, car enthusiasts contend that personal vehicles represent fundamental freedom of movement; nevertheless, individual liberties cannot justify the degradation of public health.", powerup: "POWER-UP 03 (The Pivot Bridge)", note: "Evaluates counter-argument." },
-              { content: "In conclusion, reducing private car usage is not an ideological war on drivers, but an inevitable necessity for sustainable modern civilization.", powerup: "AO5 Academic Synthesis", note: "Powerful final evaluation." }
+              { content: "Granted, social media can mobilise support for important causes and keep families in touch across distances. Nevertheless, these benefits do not outweigh the documented rise in anxiety, the fragmentation of shared reality, and the commercial exploitation of attention.", powerup: "PIVOT BRIDGE", note: "Concedes then systematically outweighs the counter." }
+            ]
+          },
+          {
+            macro: "STAGE 5: CONCLUSION",
+            pFormula: "Synthesis + Final Judgement",
+            text: [
+              { content: "Social media is neither neutral nor inevitable. Its current design prioritises profit over wellbeing. Until that changes, its harms outweigh its benefits.", powerup: "SYNTHESIS CLOSE", note: "Restates thesis with added weight and finality." }
             ]
           }
         ]
       }
     };
 
-    // UI LOGIC & CONTROLS
-    function showToast(msg, icon = "✨") {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').innerText = msg;
-      document.getElementById('toast-icon').innerText = icon;
-      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-12');
-      toast.classList.add('opacity-100', 'translate-y-0');
-      
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-12');
-      }, 2500);
-    }
+    const paper1Prompts = {
+      narrative: [
+        { tag: "November 2024 Exam", text: "A magazine is asking for entries for a creative writing competition. Write a story about a journey as suggested by this picture: [Night-time empty road, car headlights cutting through darkness, distant mountains under a starry sky]." },
+        { tag: "November 2024 Exam (alt wording)", text: "Write a story about a journey as suggested by a long empty road at night." },
+        { tag: "Sample Assessment", text: "Write the opening of a story about an unexpected encounter in a storm." },
+        { tag: "June 2023 Exam", text: "Write a story about a discovery that changes everything." },
+        { tag: "November 2022 Exam", text: "Write a story about an attempt to escape." },
+        { tag: "June 2021 Exam", text: "Write a story that begins with the line: 'It was a mistake to go back.'" },
+        { tag: "Exam-style", text: "Write a story about two people who meet under unusual circumstances." },
+        { tag: "Exam-style", text: "Write a story set during a period of extreme heat." },
+        { tag: "Exam-style", text: "Write a story inspired by the concept of keeping a secret." },
+        { tag: "Exam-style", text: "Write a story about an old memory coming back to life." }
+      ],
+      descriptive: [
+        { tag: "November 2024 Exam", text: "A magazine is asking for entries for a creative writing competition. Write a description of a forest." },
+        { tag: "November 2024 Exam (alt wording)", text: "Write a description of a forest during early morning mist." },
+        { tag: "Sample Assessment", text: "Write a description of a busy seaside town from your memory or imagination." },
+        { tag: "June 2023 Exam", text: "Write a description of an abandoned building overtaken by nature." },
+        { tag: "November 2022 Exam", text: "Write a description of a crowded market at sunset." },
+        { tag: "June 2021 Exam", text: "Write a description of a harsh winter environment." },
+        { tag: "Exam-style", text: "Write a description of a stormy sea crashing against a cliff face." },
+        { tag: "Exam-style", text: "Write a description of a train station platform at midnight." },
+        { tag: "Exam-style", text: "Write a description of an overgrown, forgotten garden." },
+        { tag: "Exam-style", text: "Write a description of a room left untouched for decades." }
+      ]
+    };
 
-    function toggleTheme() {
-      const isDark = document.documentElement.classList.toggle('dark');
-      document.getElementById('theme-icon').innerText = isDark ? '🌙' : '☀️';
-      document.getElementById('theme-text').innerText = isDark ? 'Dark' : 'Light';
-      showToast(`Switched to ${isDark ? 'Dark' : 'Light'} theme`, isDark ? '🌙' : '☀️');
+    const vaultPrompts = {
+      speech: [
+        { tag: "Live June 2022", text: "Write a speech for a meeting of your local council arguing public transport should be cheaper and more frequent." },
+        { tag: "Exam-style", text: "Write a speech for your school assembly arguing that young people must take immediate action on environmental issues." },
+        { tag: "Exam-style", text: "Write a speech to a panel of judges arguing that competitive sports do more harm than good for young people." },
+        { tag: "Exam-style", text: "Write a speech for a local community group arguing that public parks should be preserved rather than sold for development." },
+        { tag: "Exam-style", text: "Write a speech to your peers arguing that screen time restrictions for teenagers are unnecessary and unfair." },
+        { tag: "Exam-style", text: "Write a speech for a debate proposing: 'Artificial intelligence poses a threat to human creativity.'" },
+        { tag: "Exam-style", text: "Write a speech for a town hall meeting arguing that local businesses deserve greater protection against global online retailers." },
+        { tag: "Exam-style", text: "Write a speech to a youth conference arguing that vocational qualifications are just as valuable as university degrees." },
+        { tag: "Exam-style", text: "Write a speech to a school board arguing that school uniforms should be abolished." },
+        { tag: "Exam-style", text: "Write a speech to your community encouraging residents to take part in local volunteering projects." }
+      ],
+      article: [
+        { tag: "Live Nov 2021", text: "Write an article for a national newspaper giving your views on fast fashion and consumer sustainability." },
+        { tag: "Exam-style", text: "Write an article for a youth magazine exploring whether modern technology makes people feel more connected or more isolated." },
+        { tag: "Exam-style", text: "Write an article for a broadsheet newspaper giving your views on the impact of tourism on historic towns and countryside." },
+        { tag: "Exam-style", text: "Write an article for an online publication arguing that homework does not improve academic performance." },
+        { tag: "Exam-style", text: "Write an article for a lifestyle magazine examining how society views success and happiness." },
+        { tag: "Exam-style", text: "Write an article for a local newspaper discussing whether public spaces in towns are welcoming to young people." },
+        { tag: "Exam-style", text: "Write an article for a sports magazine arguing that physical education should be compulsory through to age 18." },
+        { tag: "Exam-style", text: "Write an article for a cultural journal arguing that libraries remain essential in the digital age." },
+        { tag: "Exam-style", text: "Write an article for a opinion site exploring whether gaming is a legitimate form of modern art." },
+        { tag: "Exam-style", text: "Write an article for a student paper giving your views on how exams impact student mental health." }
+      ],
+      letter: [
+        { tag: "Live June 2019", text: "Write a letter to a newspaper editor giving your views on modern fame and celebrity culture." },
+        { tag: "Exam-style", text: "Write a letter to your local MP arguing for increased investment in youth clubs and community facilities." },
+        { tag: "Exam-style", text: "Write a letter to a headteacher proposing that the school day should start later to accommodate adolescent sleep cycles." },
+        { tag: "Exam-style", text: "Write a letter to a council leader protesting a plan to build a new shopping center on local green space." },
+        { tag: "Exam-style", text: "Write a letter to the director of a major company complaining about misleading greenwashing advertising campaigns." },
+        { tag: "Exam-style", text: "Write a letter to a newspaper editor expressing your views on public spending on space exploration." },
+        { tag: "Exam-style", text: "Write a letter to your school governors arguing for healthier, more sustainable school dinner options." },
+        { tag: "Exam-style", text: "Write a letter to a university admissions board advocating for alternative assessment methods beyond traditional exams." },
+        { tag: "Exam-style", text: "Write a letter to a local transport manager urging them to improve safety and accessibility on night buses." },
+        { tag: "Exam-style", text: "Write a letter to a museum curator arguing that historical artifacts should be repatriated to their country of origin." }
+      ],
+      leaflet: [
+        { tag: "Exam-style", text: "Write a leaflet persuading local residents to back a town center traffic ban." },
+        { tag: "Exam-style", text: "Write an informative leaflet aimed at teenagers explaining how to maintain mental health and wellbeing." },
+        { tag: "Exam-style", text: "Write a leaflet for a local wildlife trust encouraging families to reduce plastic usage and protect marine life." },
+        { tag: "Exam-style", text: "Write a leaflet for a community centre offering practical advice on digital safety for older citizens." },
+        { tag: "Exam-style", text: "Write a persuasive leaflet urging young people to participate in local elections and youth forums." },
+        { tag: "Exam-style", text: "Write a guide leaflet for tourists visiting your area explaining how to travel responsibly and sustainably." },
+        { tag: "Exam-style", text: "Write a promotional leaflet for a new local charity dedicated to tackling food waste and poverty." },
+        { tag: "Exam-style", text: "Write an educational leaflet for students outlining effective, evidence-based study and revision techniques." },
+        { tag: "Exam-style", text: "Write a leaflet for local homeowners encouraging energy conservation and home efficiency improvements." },
+        { tag: "Exam-style", text: "Write a leaflet for a school campaign encouraging active travel (walking and cycling) over car journeys." }
+      ],
+      essay: [
+        { tag: "Exam-style", text: "Write an essay giving your views on whether space exploration is worth the financial cost." },
+        { tag: "Exam-style", text: "Write a formal essay evaluating whether social media platforms do more harm than good to society." },
+        { tag: "Exam-style", text: "Write an essay arguing whether artistic freedom should ever be restricted by censorship." },
+        { tag: "Exam-style", text: "Write an essay assessing whether consumerism is destroying human connection and community spirit." },
+        { tag: "Exam-style", text: "Write an essay evaluating whether technology has made human lives simpler or more complicated." },
+        { tag: "Exam-style", text: "Write an essay giving your views on whether compulsory military or civil service should be introduced for school leavers." },
+        { tag: "Exam-style", text: "Write an essay considering whether animal testing for medical research can ever be morally justified." },
+        { tag: "Exam-style", text: "Write an essay examining whether wealth inequality is the greatest challenge facing modern democracies." },
+        { tag: "Exam-style", text: "Write an essay assessing whether traditional print media will become completely obsolete within the next decade." },
+        { tag: "Exam-style", text: "Write an essay evaluating whether individual actions or government regulations are more important in fighting climate change." }
+      ]
+    };
+
+    const dynamicChecklists = {
+      narrative: [
+        "Micro-Zoom Opening: Single microscopic sensory detail to start (distinctive imagery)",
+        "Pathetic Fallacy / Atmosphere: Weather matched to mood; highly successful control of atmosphere",
+        "The Colon Rule: Structural turning point [Impact : Immediate Cause] for temporal/spatial shifts",
+        "Varied Sentence Rhythm: Complex -> Short Declarative -> Fragment (impressive control of phrasing)",
+        "Cyclic Close: Re-visit opening micro image with changed perspective (convincing sequence of events)",
+        "Original Perspective & Characters: Distinctive narrative voice and convincing character development",
+        "Task Focus: Directly address the journey focus to avoid AO5 Level 2 cap"
+      ],
+      descriptive: [
+        "Extreme Close-Up Opener: Anchor vision on texture/material (subtle detail and original imagery)",
+        "Mid-Range Panning: Expand field of view to surroundings (fluid sequence of ideas)",
+        "Macro Panorama: Full scale weather/sky landscape (compelling evocative description)",
+        "Light & Shadow Juxtaposition: Dramatic sensory color contrast (highly successful control of mood/atmosphere)",
+        "Quiet Resolution: Sensory fade-out single sentence (crafted style)",
+        "Judicious Vocabulary: Impressive, ambitious words used with precision — not forced",
+        "Task Focus: Directly describe the forest/setting focus to avoid AO5 Level 2 cap"
+      ],
+      speech: [
+        "Form Anchor: Formal Greeting + Direct Address to the audience",
+        "Rhetorical Hook: Powerful opening question or bold statistic",
+        "3-Sentence Stack: Complex -> Compound -> Minor punchline",
+        "The Pivot Bridge: Clear counter-argument transition (Granted... nevertheless)",
+        "Call to Action: Rule of three imperative commands to close"
+      ],
+      article: [
+        "Headline & Strapline: Punchy capitalised title with sub-heading",
+        "Journalistic Hook: Immediate engaging anecdotal context",
+        "Cohesive Paragraphing: Seamless discourse markers across paragraphs",
+        "The Colon Rule: Structural emphasis for key argument points",
+        "Final Takeaway: Memorable punchy concluding sentence"
+      ],
+      letter: [
+        "Formal Header: Salutation + Clear Subject Line (RE: ...)",
+        "Stance Statement: Explicit purpose in Paragraph 1",
+        "Logical Arguments: Clear evidence-backed points",
+        "Formal Register: Sustained academic vocabulary and tone",
+        "Standard Sign-off: Yours sincerely / Yours faithfully"
+      ],
+      leaflet: [
+        "Bold Main Banner Title: Clear public guide heading",
+        "Section Sub-headings: Clearly demarcated parts",
+        "Bullet Points / Lists: Structured action steps",
+        "Persuasive Imperatives: Actionable advice for readers",
+        "Contact / Call to Action: Closing reference line"
+      ],
+      essay: [
+        "Formal Thesis Statement: Clear academic position in Paragraph 1",
+        "Syntactic Power-ups: Balanced use of passive voice and complex clauses",
+        "Counter-Perspective: Nuanced evaluation of opposing arguments",
+        "Cohesive Connectives: Furthermore, Consequently, In contrast",
+        "Reaffirmed Thesis: Strong synthesis in the closing conclusion"
+      ]
+    };
+
+    function switchPaper(paperKey) {
+      currentPaper = paperKey;
+      const btnP1 = document.getElementById('pbtn-p1');
+      const btnP2 = document.getElementById('pbtn-p2');
+
+      if (paperKey === 'p1') {
+        btnP1.className = "paper-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer";
+        btnP2.className = "paper-btn px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+        document.getElementById('app-paper-title').innerText = "Paper 1 Explorations in Creative Reading & Writing";
+        currentFmt = 'narrative';
+        currentExampleFmt = 'narrative';
+        currentVaultCat = 'narrative';
+      } else {
+        btnP2.className = "paper-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer";
+        btnP1.className = "paper-btn px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+        document.getElementById('app-paper-title').innerText = "Paper 2 Writers' Viewpoints & Perspectives";
+        currentFmt = 'speech';
+        currentExampleFmt = 'speech';
+        currentVaultCat = 'speech';
+      }
+
+      renderFormatButtons();
+      loadFormat(currentFmt);
+      renderPowerUpsUI();
+      renderAO6Section();
+      renderDecoderTable();
+      renderExampleButtons();
+      renderVaultButtons();
+      renderDojoDropdown();
+      showToast(`Switched to ${paperKey === 'p1' ? 'Paper 1 (Creative Writing)' : 'Paper 2 (Transactional Writing)'}`);
     }
 
     function switchTab(tabId) {
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-white', 'dark:bg-gray-800', 'text-blue-600', 'dark:text-blue-400', 'shadow-sm');
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('active');
         btn.classList.add('text-gray-600', 'dark:text-gray-400');
       });
       document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
 
       const activeBtn = document.getElementById(`tab-${tabId}`);
       if (activeBtn) {
-        activeBtn.classList.add('bg-white', 'dark:bg-gray-800', 'text-blue-600', 'dark:text-blue-400', 'shadow-sm');
+        activeBtn.classList.add('active');
         activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400');
       }
 
@@ -1234,10 +1091,84 @@
       if (tabId === 'examples') renderExampleContainer();
       if (tabId === 'vault') loadVaultCategory(currentVaultCat);
       if (tabId === 'drill') renderDynamicChecklist();
+      if (tabId === 'ao6') renderAO6Section();
     }
 
-    // FORMULA LAB RENDERER
+    function setFormatMode(mode) {
+      currentFormatMode = mode;
+      const btnAnnotated = document.getElementById('btn-fmt-annotated');
+      const btnPlain = document.getElementById('btn-fmt-plain');
+      if (mode === 'annotated') {
+        btnAnnotated.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer";
+        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+      } else {
+        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer";
+        btnAnnotated.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+      }
+      loadFormat(currentFmt);
+    }
+
+    function setExampleMode(mode) {
+      currentExampleMode = mode;
+      const btnAnnotated = document.getElementById('btn-mode-annotated');
+      const btnPlain = document.getElementById('btn-mode-plain');
+      if (mode === 'annotated') {
+        btnAnnotated.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer";
+        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+      } else {
+        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm cursor-pointer";
+        btnAnnotated.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer";
+      }
+      renderExampleContainer();
+    }
+
+    function renderFormatButtons() {
+      const container = document.getElementById('format-selector-buttons');
+      const isP1 = currentPaper === 'p1';
+      const badge = document.getElementById('lab-paper-badge');
+      const heading = document.getElementById('lab-paper-heading');
+      const desc = document.getElementById('lab-paper-desc');
+
+      if (isP1) {
+        badge.innerText = "PAPER 1 CREATIVE BLUEPRINTS";
+        heading.innerText = "Two paths to Level 4 story & description craft.";
+        desc.innerText = "Choose Narrative or Descriptive writing.";
+        container.className = "grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg";
+        container.innerHTML = `
+          <button id="fmt-narrative" onclick="loadFormat('narrative')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">
+            📖 1. Narrative Story
+          </button>
+          <button id="fmt-descriptive" onclick="loadFormat('descriptive')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
+            🎨 2. Descriptive Writing
+          </button>
+        `;
+      } else {
+        badge.innerText = "PAPER 2 FORMAT BLUEPRINTS";
+        heading.innerText = "Five ways to hit the form.";
+        desc.innerText = "Choose an exam format.";
+        container.className = "grid grid-cols-2 sm:grid-cols-5 gap-2";
+        container.innerHTML = `
+          <button id="fmt-speech" onclick="loadFormat('speech')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">
+            🎤 Speech
+          </button>
+          <button id="fmt-article" onclick="loadFormat('article')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
+            📰 Article
+          </button>
+          <button id="fmt-letter" onclick="loadFormat('letter')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
+            ✉️ Letter
+          </button>
+          <button id="fmt-leaflet" onclick="loadFormat('leaflet')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
+            📋 Leaflet
+          </button>
+          <button id="fmt-essay" onclick="loadFormat('essay')" class="fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">
+            📝 Essay
+          </button>
+        `;
+      }
+    }
+
     function loadFormat(fmtKey) {
+      currentFmt = fmtKey;
       document.querySelectorAll('.fmt-btn').forEach(btn => {
         btn.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/40', 'text-blue-600', 'dark:text-blue-300');
         btn.classList.add('border-black/10', 'dark:border-white/10', 'bg-white', 'dark:bg-[#121214]');
@@ -1249,8 +1180,10 @@
         activeBtn.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/40', 'text-blue-600', 'dark:text-blue-300');
       }
 
-      const data = formatData[fmtKey];
+      const dataSource = currentPaper === 'p1' ? paper1FormatData : formatData;
+      const data = dataSource[fmtKey];
       const display = document.getElementById('format-display');
+      if (!data) return;
 
       let macroHtml = data.macro.map(m => `
         <div class="bg-gray-100 dark:bg-black/60 border border-black/5 dark:border-white/10 rounded-xl p-3 text-center space-y-1">
@@ -1259,26 +1192,37 @@
         </div>
       `).join('');
 
-      let paraHtml = data.paragraphs.map((p, idx) => `
-        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
-          <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
-            <span class="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${p.name}</span>
-            <span class="text-[10px] font-mono bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded font-bold">PARAGRAPH 0${idx+1}</span>
+      let paraHtml = data.paragraphs.map((p, idx) => {
+        if (currentFormatMode === 'plain') {
+          return `
+            <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+              <span class="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${p.name}</span>
+              <pre class="font-mono text-xs text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-black/60 p-3 rounded-xl border border-black/5 dark:border-white/10 whitespace-pre-wrap leading-relaxed">${p.template}</pre>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
+            <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
+              <span class="font-mono text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">${p.name}</span>
+              <span class="text-[10px] font-mono bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded font-bold">PARAGRAPH 0${idx+1}</span>
+            </div>
+            <div class="text-xs space-y-1">
+              <span class="text-gray-500 dark:text-gray-400 font-bold font-mono">PURPOSE:</span>
+              <p class="text-gray-700 dark:text-gray-300">${p.purpose}</p>
+            </div>
+            <div class="text-xs space-y-1">
+              <span class="text-emerald-600 dark:text-emerald-400 font-bold font-mono">MECHANISED FORMULA:</span>
+              <div class="font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/20 px-3 py-1.5 rounded-xl mt-1">${p.formula}</div>
+            </div>
+            <div class="text-xs space-y-1">
+              <span class="text-amber-600 dark:text-amber-400 font-bold font-mono">CONCRETE TYPING TEMPLATE:</span>
+              <pre class="font-mono text-xs text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-black/60 p-3 rounded-xl border border-black/5 dark:border-white/10 whitespace-pre-wrap mt-1 leading-relaxed">${p.template}</pre>
+            </div>
           </div>
-          <div class="text-xs space-y-1">
-            <span class="text-gray-500 dark:text-gray-400 font-bold font-mono">PURPOSE:</span>
-            <p class="text-gray-700 dark:text-gray-300">${p.purpose}</p>
-          </div>
-          <div class="text-xs space-y-1">
-            <span class="text-emerald-600 dark:text-emerald-400 font-bold font-mono">MECHANISED FORMULA:</span>
-            <div class="font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/20 px-3 py-1.5 rounded-xl mt-1">${p.formula}</div>
-          </div>
-          <div class="text-xs space-y-1">
-            <span class="text-amber-600 dark:text-amber-400 font-bold font-mono">CONCRETE TYPING TEMPLATE:</span>
-            <pre class="font-mono text-xs text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-black/60 p-3 rounded-xl border border-black/5 dark:border-white/10 whitespace-pre-wrap mt-1 leading-relaxed">${p.template}</pre>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
       display.innerHTML = `
         <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-6 space-y-5 shadow-sm">
@@ -1290,45 +1234,251 @@
                 <p class="text-xs text-gray-500">${data.desc}</p>
               </div>
             </div>
-            <span class="text-[10px] font-mono font-bold bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-500/30 px-2.5 py-1 rounded-lg">ALTITUDE HUB</span>
           </div>
-
           <div class="space-y-3">
-            <span class="text-xs font-mono font-bold text-gray-500 uppercase flex items-center gap-1.5">
-              <span>✈️</span> ALTITUDE 1: HIGH-LEVEL 5-STAGE BLUEPRINT
-            </span>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              ${macroHtml}
-            </div>
+            <span class="text-xs font-mono font-bold text-gray-500 uppercase">MACRO 5-STAGE BLUEPRINT</span>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">${macroHtml}</div>
           </div>
         </div>
-
         <div class="space-y-4 pt-2">
-          <span class="text-xs font-mono font-bold text-gray-500 uppercase flex items-center gap-1.5">
-            <span>🔬</span> ALTITUDE 2: PARAGRAPH-BY-PARAGRAPH DRILL-DOWN FORMULAS
-          </span>
-          <div class="space-y-4">
-            ${paraHtml}
-          </div>
+          <span class="text-xs font-mono font-bold text-gray-500 uppercase">PARAGRAPH FORMULAS (${currentFormatMode.toUpperCase()})</span>
+          <div class="space-y-4">${paraHtml}</div>
         </div>
       `;
     }
 
-    function setFormatMode(mode) {
-      currentFormatMode = mode;
-      const btnPlain = document.getElementById('btn-fmt-plain');
-      const btnAnno = document.getElementById('btn-fmt-annotated');
+    function renderPowerUpsUI() {
+      const isP1 = currentPaper === 'p1';
+      document.getElementById('powerups-paper-badge').innerText = isP1 ? "PAPER 1 CREATIVE POWER-UPS" : "PAPER 2 TRANSACTIONAL MOVES";
+      document.getElementById('powerups-paper-heading').innerText = isP1 ? "Three syntactic power-ups for creative craft." : "Three syntactic power-ups. Any form.";
       
-      if (mode === 'plain') {
-        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm";
-        btnAnno.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400";
+      const bannerContainer = document.getElementById('powerups-banner-box');
+      bannerContainer.innerHTML = isP1 ? `
+        <div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-5 text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
+          <strong class="font-bold block text-sm mb-1">Descriptive & Narrative Crafting Power-ups</strong>
+          Focus on precision micro-zooming, rhythmic 3-sentence stacks, and structural colon clarification to guarantee Level 4 control.
+        </div>
+      ` : `
+        <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
+          <strong class="font-bold block text-sm mb-1">Transactional Persuasive Mechanics</strong>
+          Combine structural connectors with colon causes and high-impact sentence stack variations.
+        </div>
+      `;
+
+      const grid = document.getElementById('powerups-grid');
+      if (isP1) {
+        grid.innerHTML = `
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">POWER-UP 01</span>
+            <h3 class="font-bold text-sm">Micro-Zoom Opener</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Anchor sentence 1 onto a single physical texture or object.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "A single grain of rust flaked..."
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">POWER-UP 02</span>
+            <h3 class="font-bold text-sm">3-Sentence Rhythm Stack</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Complex sentence -> Compound sentence -> Minor sentence.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "While mist choked... light struggled... Suffocating."
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">POWER-UP 03</span>
+            <h3 class="font-bold text-sm">Cyclic Mirror Close</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Return to your initial object image with changed emotional weight.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "Another flake of rust hit..."
+            </div>
+          </div>
+        `;
       } else {
-        btnAnno.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm";
-        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400";
+        grid.innerHTML = `
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">POWER-UP 01</span>
+            <h3 class="font-bold text-sm">The Colon Rule</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Statement : Immediate Cause or Clarification.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "The barrier is clear: buses arrive late."
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">POWER-UP 02</span>
+            <h3 class="font-bold text-sm">The Pivot Bridge</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Granted [Counter-argument]; nevertheless [Core Stance].</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "Granted, cars save time; nevertheless..."
+            </div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">POWER-UP 03</span>
+            <h3 class="font-bold text-sm">Imperative Triads</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Three direct command verbs back-to-back in the conclusion.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
+              "Lower fares. Expand routes. Modernize..."
+            </div>
+          </div>
+        `;
       }
     }
 
-    // MODEL EXAMPLES ENGINE
+    function renderAO6Section() {
+      const isP1 = currentPaper === 'p1';
+      document.getElementById('ao6-paper-badge').innerText = isP1 ? "PAPER 1 · AO6 TECHNICAL ACCURACY · 16 MARKS" : "PAPER 2 · AO6 TECHNICAL ACCURACY · 16 MARKS";
+      document.getElementById('ao6-paper-heading').innerText = isP1 
+        ? "Sentence control that serves atmosphere and narrative effect."
+        : "Sentence control that serves persuasion, form and register.";
+      document.getElementById('ao6-paper-desc').innerText = isP1
+        ? "In creative writing, AO6 is judged on how precisely punctuation, sentence forms and ambitious vocabulary create mood, pace and clarity. Errors in demarcation or forced vocabulary cost marks."
+        : "In transactional writing, AO6 is judged on secure punctuation, full sentence variety for effect, and ambitious vocabulary that fits the form and audience without losing accuracy.";
+
+      const banner = document.getElementById('ao6-banner-box');
+      banner.innerHTML = `
+        <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-5 text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed">
+          <strong class="font-bold block text-sm mb-1">Level 4 AO6 (13–16 marks)</strong>
+          Sentence demarcation is consistently secure and accurate. A wide range of punctuation is used with a high level of accuracy. A full range of appropriate sentence forms is used for effect. Standard English is used consistently with secure control of complex structures. Spelling is highly accurate, including ambitious vocabulary.
+        </div>
+      `;
+
+      const grid = document.getElementById('ao6-criteria-grid');
+      if (isP1) {
+        grid.innerHTML = `
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">SENTENCE FORMS</span>
+            <h3 class="font-bold text-sm">Full range for effect</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Use complex, compound, simple and minor sentences deliberately to control pace and atmosphere.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">While the headlights sliced the dark, the road ahead vanished. She slowed. Nowhere.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">PUNCTUATION</span>
+            <h3 class="font-bold text-sm">Wide range, high accuracy</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Colons for clarification, semicolons for linked ideas, dashes for interruption, parentheses for asides — all accurate.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">The barrier was clear: the forest closed in.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">VOCABULARY</span>
+            <h3 class="font-bold text-sm">Ambitious and judicious</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Choose precise, ambitious words that fit the mood. Avoid forcing obscure terms that break the atmosphere.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">The canopy exhaled a damp, resinous breath.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">DEMARCATION & ACCURACY</span>
+            <h3 class="font-bold text-sm">Consistently secure</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">No comma splices. Every sentence has a clear subject and verb. Spelling of ambitious words is secure.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">Correct: She paused. Incorrect: She paused, the road continued.</div>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = `
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">SENTENCE FORMS</span>
+            <h3 class="font-bold text-sm">Full range for persuasive effect</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Vary complex, compound and minor sentences to control emphasis and keep the audience engaged.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">While cars offer convenience, they choke our streets. Unacceptable.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">PUNCTUATION</span>
+            <h3 class="font-bold text-sm">Structural accuracy</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Use colons for clarification, semicolons for balanced points, and accurate commas in complex sentences.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">The barrier is clear: buses arrive late and charge extortionate fares.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">VOCABULARY</span>
+            <h3 class="font-bold text-sm">Ambitious and register-matched</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Use extensive, ambitious vocabulary that fits the form (formal letter, speech, article) without accuracy errors.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">The proposal prioritises individual convenience over collective welfare.</div>
+          </div>
+          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">DEMARCATION & STANDARD ENGLISH</span>
+            <h3 class="font-bold text-sm">Consistently secure</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Secure sentence boundaries, correct agreement, and Standard English throughout. No comma splices.</p>
+            <div class="font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl">Correct: Granted, cars save time; nevertheless, public health must come first.</div>
+          </div>
+        `;
+      }
+
+      const examples = document.getElementById('ao6-examples-box');
+      examples.innerHTML = `
+        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
+          <span class="text-xs font-mono font-bold text-gray-500 uppercase">AO6 Self-Check (use in Timed Drill)</span>
+          <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1 list-disc pl-4">
+            <li>Every sentence is correctly demarcated (no comma splices or run-ons).</li>
+            <li>At least one complex, one compound and one minor sentence appears.</li>
+            <li>Colons or semicolons are used accurately for structural effect.</li>
+            <li>Ambitious vocabulary is spelled correctly and used judiciously.</li>
+            <li>Standard English and subject-verb agreement are consistent.</li>
+            <li>Punctuation range supports the purpose (atmosphere in Paper 1; persuasion in Paper 2).</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function renderDecoderTable() {
+      const isP1 = currentPaper === 'p1';
+      const tbody = document.getElementById('decoder-table-body');
+      tbody.innerHTML = isP1 ? `
+        <tr>
+          <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Narrative</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Distinctive original perspective; convincing characters; skilful temporal/spatial shifts; highly successful control of mood</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Micro object opening that echoes at the close; fluid sequence of events</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Micro detail → Mood/Atmosphere → Climax shift → Cyclic Echo</td>
+        </tr>
+        <tr>
+          <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Descriptive</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Distinctive original imagery; compelling evocative description; fluid sequence; highly successful control of atmosphere</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Extreme close-up expanding to panorama with light/shadow contrast</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Texture zoom → Mid-pan → Macro scale → Sensory contrast → Fade</td>
+        </tr>
+        <tr>
+          <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO6 Mechanics</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Full range of sentence forms for effect; impressive control of phrasing; ambitious vocabulary used judiciously</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Rhythm switching across paragraphs with precise word choice</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Complex clause → Declarative → Minor; judicious ambitious vocab</td>
+        </tr>
+        <tr>
+          <td class="p-3 font-bold text-rose-600 dark:text-rose-400">Critical Note</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Must directly address the focus of the task</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">If off-focus, AO5 is capped at Level 2 (12 marks)</td>
+          <td class="p-3 font-mono text-rose-600 dark:text-rose-400">Stay tightly on the journey or forest focus</td>
+        </tr>
+      ` : `
+        <tr>
+          <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO5 Register</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Tone matched to purpose & audience</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Formal direct engagement</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">Greeting + Audience Direct Address</td>
+        </tr>
+        <tr>
+          <td class="p-3 font-bold text-blue-600 dark:text-blue-400">AO6 Cohesion</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Sophisticated punctuation marks</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">Structural colon & semicolon bridges</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">[Statement] : [Immediate Cause]</td>
+        </tr>
+      `;
+    }
+
+    function renderExampleButtons() {
+      const container = document.getElementById('example-selector-buttons');
+      const isP1 = currentPaper === 'p1';
+      if (isP1) {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg";
+        container.innerHTML = `
+          <button id="ex-fmt-narrative" onclick="loadExampleFormat('narrative')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">📖 Narrative Model</button>
+          <button id="ex-fmt-descriptive" onclick="loadExampleFormat('descriptive')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">🎨 Descriptive Model</button>
+        `;
+      } else {
+        container.className = "grid grid-cols-2 sm:grid-cols-5 gap-2";
+        container.innerHTML = `
+          <button id="ex-fmt-speech" onclick="loadExampleFormat('speech')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">🎤 Speech</button>
+          <button id="ex-fmt-article" onclick="loadExampleFormat('article')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📰 Article</button>
+          <button id="ex-fmt-letter" onclick="loadExampleFormat('letter')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">✉️ Letter</button>
+          <button id="ex-fmt-leaflet" onclick="loadExampleFormat('leaflet')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📋 Leaflet</button>
+          <button id="ex-fmt-essay" onclick="loadExampleFormat('essay')" class="ex-fmt-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📝 Essay</button>
+        `;
+      }
+    }
+
     function loadExampleFormat(fmtKey) {
       currentExampleFmt = fmtKey;
       document.querySelectorAll('.ex-fmt-btn').forEach(btn => {
@@ -1345,114 +1495,71 @@
       renderExampleContainer();
     }
 
-    function setExampleMode(mode) {
-      currentExampleMode = mode;
-      const btnPlain = document.getElementById('btn-mode-plain');
-      const btnAnno = document.getElementById('btn-mode-annotated');
-
-      if (mode === 'plain') {
-        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm";
-        btnAnno.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400";
-      } else {
-        btnAnno.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm";
-        btnPlain.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400";
-      }
-
-      renderExampleContainer();
-    }
-
     function renderExampleContainer() {
       const container = document.getElementById('example-display-container');
-      const model = modelAnswers[currentExampleFmt];
+      const dataSource = currentPaper === 'p1' ? paper1ModelAnswers : modelAnswers;
+      const model = dataSource[currentExampleFmt] || dataSource[Object.keys(dataSource)[0]];
+      if (!model) return;
 
-      let contentHtml = '';
-
-      if (currentExampleMode === 'plain') {
-        let paragraphs = model.sections.map(sec => {
-          let plainText = sec.text.map(t => t.content).join(' ');
-          return `<p class="text-gray-800 dark:text-gray-200 leading-relaxed text-sm">${plainText.replace(/\n/g, '<br>')}</p>`;
-        }).join('');
-
-        contentHtml = `
-          <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-6 space-y-5 shadow-sm">
-            <div class="border-b border-black/10 dark:border-white/10 pb-4 space-y-1">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-mono font-bold text-gray-500 uppercase">PLAIN STUDENT WRITING VIEW</span>
-                <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">LEVEL 4 MODEL</span>
-              </div>
-              <h3 class="text-lg font-bold font-mono">${model.title}</h3>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-black/40 p-4 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
-              <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase block">EXAM TASK PROMPT</span>
-              <p class="text-xs text-gray-700 dark:text-gray-300 italic">"${model.prompt}"</p>
-            </div>
-
-            <div class="space-y-4 pt-2">
-              ${paragraphs}
-            </div>
+      let sectionsHtml = model.sections.map(sec => `
+        <div class="bg-gray-50 dark:bg-black/40 rounded-xl p-4 border border-black/5 dark:border-white/10 space-y-3">
+          <div class="flex justify-between items-center text-xs font-mono">
+            <span class="font-bold text-blue-600 dark:text-blue-400 uppercase">${sec.macro}</span>
+            <span class="text-emerald-600 dark:text-emerald-400">${sec.pFormula}</span>
           </div>
-        `;
-      } else {
-        let annotatedSections = model.sections.map((sec, idx) => {
-          let sentenceMarkup = sec.text.map(t => {
-            let badge = t.powerup ? `<span class="inline-block text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-500/30 ml-1.5">${t.powerup}</span>` : '';
-            return `
-              <div class="bg-gray-50 dark:bg-black/40 p-3.5 rounded-xl border border-black/5 dark:border-white/10 space-y-2">
-                <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
-                  ${t.content.replace(/\n/g, '<br>')} ${badge}
-                </p>
-                <div class="text-xs font-mono bg-white dark:bg-gray-900/80 p-2 rounded-lg border border-black/5 dark:border-white/5 text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                  <span class="text-amber-600 dark:text-amber-400 font-bold">⚙️ MECHANIC:</span>
-                  <span class="text-gray-700 dark:text-gray-300">${t.note}</span>
-                </div>
-              </div>
-            `;
-          }).join('');
-
-          return `
-            <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-4 shadow-sm">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-black/10 dark:border-white/10 pb-3 gap-2">
-                <div>
-                  <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 uppercase block">${sec.macro}</span>
-                  <span class="text-xs font-bold font-mono text-emerald-600 dark:text-emerald-400">ALTITUDE 2 FORMULA: ${sec.pFormula}</span>
-                </div>
-                <span class="text-[10px] font-mono bg-gray-200 dark:bg-gray-800 px-2.5 py-1 rounded text-gray-600 dark:text-gray-400 font-bold self-start sm:self-auto">SECTION 0${idx+1}</span>
-              </div>
-
-              <div class="space-y-3">
-                ${sentenceMarkup}
-              </div>
-            </div>
-          `;
-        }).join('');
-
-        contentHtml = `
-          <div class="space-y-4">
-            <div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-4 space-y-2">
-              <div class="flex items-center justify-between">
-                <h3 class="text-xs font-bold text-blue-700 dark:text-blue-300 font-mono">${model.title}</h3>
-                <span class="text-[10px] font-mono bg-blue-500 text-white font-bold px-2 py-0.5 rounded-full">ANNOTATED VIEW</span>
-              </div>
-              <p class="text-xs text-gray-700 dark:text-gray-300">
-                This mode deconstructs the Level 4 model line-by-line, demonstrating how the <strong>Macro Stage</strong>, <strong>Paragraph Formula</strong>, and <strong>Universal Power-Ups</strong> create Level 4 momentum.
+          ${sec.text.map(t => `
+            <div class="space-y-1">
+              <p class="text-xs font-sans text-gray-800 dark:text-gray-200 leading-relaxed font-medium bg-white dark:bg-gray-900 p-3 rounded-lg border border-black/5 dark:border-white/5">
+                "${t.content}"
               </p>
+              ${currentExampleMode === 'annotated' ? `
+                <div class="flex items-center gap-2 text-[11px] text-gray-500 font-mono">
+                  ${t.powerup ? `<span class="bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded font-bold">${t.powerup}</span>` : ''}
+                  <span>${t.note}</span>
+                </div>
+              ` : ''}
             </div>
+          `).join('')}
+        </div>
+      `).join('');
 
-            <div class="space-y-4">
-              ${annotatedSections}
-            </div>
+      container.innerHTML = `
+        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-6 space-y-4 shadow-sm">
+          <div>
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 uppercase">Grade 8/9 Level 4 Model</span>
+            <h3 class="font-bold text-lg font-mono mt-1">${model.title}</h3>
+            <p class="text-xs italic text-gray-500 dark:text-gray-400 mt-0.5">"${model.prompt}"</p>
           </div>
-        `;
-      }
-
-      container.innerHTML = contentHtml;
+          <div class="space-y-3">
+            ${sectionsHtml}
+          </div>
+        </div>
+      `;
     }
 
-    // PROMPT VAULT RENDERER
+    function renderVaultButtons() {
+      const container = document.getElementById('vault-selector-buttons');
+      const isP1 = currentPaper === 'p1';
+      if (isP1) {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg";
+        container.innerHTML = `
+          <button id="vcat-narrative" onclick="loadVaultCategory('narrative')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">📖 Narrative Prompts</button>
+          <button id="vcat-descriptive" onclick="loadVaultCategory('descriptive')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">🎨 Descriptive Prompts</button>
+        `;
+      } else {
+        container.className = "grid grid-cols-2 sm:grid-cols-5 gap-2";
+        container.innerHTML = `
+          <button id="vcat-speech" onclick="loadVaultCategory('speech')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-blue-500 bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300">🎤 Speech</button>
+          <button id="vcat-article" onclick="loadVaultCategory('article')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📰 Article</button>
+          <button id="vcat-letter" onclick="loadVaultCategory('letter')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">✉️ Letter</button>
+          <button id="vcat-leaflet" onclick="loadVaultCategory('leaflet')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📋 Leaflet</button>
+          <button id="vcat-essay" onclick="loadVaultCategory('essay')" class="vcat-btn px-4 py-3 rounded-2xl font-bold text-xs border text-center transition cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#121214]">📝 Essay</button>
+        `;
+      }
+    }
+
     function loadVaultCategory(cat) {
       currentVaultCat = cat;
-
       document.querySelectorAll('.vcat-btn').forEach(btn => {
         btn.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/40', 'text-blue-600', 'dark:text-blue-300');
         btn.classList.add('border-black/10', 'dark:border-white/10', 'bg-white', 'dark:bg-[#121214]');
@@ -1464,156 +1571,148 @@
         activeBtn.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/40', 'text-blue-600', 'dark:text-blue-300');
       }
 
-      const prompts = vaultPrompts[cat];
+      const dataSource = currentPaper === 'p1' ? paper1Prompts : vaultPrompts;
+      const prompts = dataSource[cat] || [];
       const listContainer = document.getElementById('vault-prompts-list');
-
-      let cardsHtml = prompts.map((item, idx) => `
-        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm hover:border-blue-500/50 transition">
-          <div class="space-y-1.5 flex-1">
-            <div class="flex items-center gap-2">
-              <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded border border-blue-500/30">${item.tag}</span>
-              <span class="text-[10px] font-mono text-gray-500">PROMPT ${idx + 1}/10</span>
-            </div>
-            <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed font-medium">
-              ${item.text}
-            </p>
+      
+      listContainer.innerHTML = prompts.map((item, idx) => `
+        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 shadow-sm">
+          <div class="space-y-1">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">${item.tag}</span>
+            <p class="text-xs text-gray-800 dark:text-gray-200 font-medium">${item.text}</p>
           </div>
-          <div class="flex items-center gap-2 shrink-0">
-            <button onclick="copyPromptText(this, \`${escapeJsString(item.text)}\`)" class="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs font-mono font-bold py-2 px-3 rounded-xl border border-black/5 dark:border-white/10 transition flex items-center gap-1">
-              📋 COPY
-            </button>
-            <button onclick="sendToDojo('${cat}', \`${escapeJsString(item.tag)}\`, \`${escapeJsString(item.text)}\`)" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-mono font-bold py-2 px-3 rounded-xl transition shadow-md flex items-center gap-1">
-              ⏱️ TIMED DRILL
-            </button>
-          </div>
+          <button onclick="sendToDojo('${cat}', '${item.tag}', '${item.text}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition cursor-pointer shrink-0">
+            ▶ Send to Timed Drill
+          </button>
         </div>
       `).join('');
-
-      listContainer.innerHTML = cardsHtml;
     }
 
-    function escapeJsString(str) {
-      return str.replace(/`/g, '\\`').replace(/'/g, "\\'").replace(/"/g, '\\"');
+    function renderDojoDropdown() {
+      const isP1 = currentPaper === 'p1';
+      const select = document.getElementById('dojo-form-select');
+      select.innerHTML = isP1 ? `
+        <option value="narrative">Narrative Story</option>
+        <option value="descriptive">Descriptive Writing</option>
+      ` : `
+        <option value="speech">Speech</option>
+        <option value="article">Article</option>
+        <option value="letter">Letter</option>
+        <option value="leaflet">Leaflet</option>
+        <option value="essay">Essay</option>
+      `;
+      select.value = currentFmt;
+      renderDynamicChecklist();
     }
 
-    function copyPromptText(btn, text) {
-      document.execCommand('copy');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = `✅ COPIED!`;
-      showToast("Prompt copied to clipboard");
-      setTimeout(() => btn.innerHTML = originalText, 1500);
-    }
-
-    // TIMED DRILL DOJO & DYNAMIC CHECKLIST CONTROLS
     function renderDynamicChecklist() {
       const form = document.getElementById('dojo-form-select').value;
-      const label = document.getElementById('checklist-form-label');
-      const container = document.getElementById('dynamic-checklist-container');
-
-      label.innerText = form.toUpperCase();
-      const items = dynamicChecklists[form] || dynamicChecklists['speech'];
-      
-      container.innerHTML = items.map(text => `
-        <label class="flex items-start gap-2.5 cursor-pointer text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition">
-          <input type="checkbox" class="mt-0.5 rounded border-gray-300 dark:border-gray-700 text-blue-600 focus:ring-0">
-          <span class="leading-tight">${text}</span>
+      document.getElementById('checklist-form-label').innerText = form.toUpperCase();
+      const items = dynamicChecklists[form] || dynamicChecklists.speech;
+      document.getElementById('dynamic-checklist-container').innerHTML = items.map(text => `
+        <label class="flex items-start gap-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer">
+          <input type="checkbox" class="mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <span>${text}</span>
         </label>
       `).join('');
     }
 
     function sendToDojo(form, tag, text) {
       switchTab('drill');
-      document.getElementById('dojo-form-select').value = form;
+      const select = document.getElementById('dojo-form-select');
+      select.value = form;
       document.getElementById('dojo-prompt-tag').innerText = tag;
       document.getElementById('dojo-prompt-text').innerText = text;
       renderDynamicChecklist();
-      resetDojoTimer();
-      showToast("Prompt loaded into Timed Drill Dojo", "⏱️️");
+      showToast("Prompt loaded into Timed Drill!");
     }
 
     function onDojoFormChange() {
-      const selectedForm = document.getElementById('dojo-form-select').value;
-      const prompts = vaultPrompts[selectedForm];
-      const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-      document.getElementById('dojo-prompt-tag').innerText = randomPrompt.tag;
-      document.getElementById('dojo-prompt-text').innerText = randomPrompt.text;
+      const form = document.getElementById('dojo-form-select').value;
+      const dataSource = currentPaper === 'p1' ? paper1Prompts : vaultPrompts;
+      const list = dataSource[form] || [];
+      if (list.length > 0) {
+        document.getElementById('dojo-prompt-tag').innerText = list[0].tag;
+        document.getElementById('dojo-prompt-text').innerText = list[0].text;
+      }
       renderDynamicChecklist();
-      resetDojoTimer();
     }
 
-    function nextDojoPrompt() {
-      const selectedForm = document.getElementById('dojo-form-select').value;
-      const prompts = vaultPrompts[selectedForm];
-      const currentText = document.getElementById('dojo-prompt-text').innerText;
-      let nextPrompt = prompts[Math.floor(Math.random() * prompts.length)];
-      while (nextPrompt.text === currentText && prompts.length > 1) {
-        nextPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+    function toggleTheme() {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById('theme-icon');
+      const themeText = document.getElementById('theme-text');
+      
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        themeIcon.innerText = '☀️';
+        themeText.innerText = 'Light';
+      } else {
+        html.classList.add('dark');
+        themeIcon.innerText = '🌙';
+        themeText.innerText = 'Dark';
       }
-      document.getElementById('dojo-prompt-tag').innerText = nextPrompt.tag;
-      document.getElementById('dojo-prompt-text').innerText = nextPrompt.text;
-      resetDojoTimer();
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-12');
+      setTimeout(() => toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-12'), 2200);
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('dojo-editor').value.trim();
+      const count = text ? text.split(/\s+/).length : 0;
+      document.getElementById('dojo-word-count').innerText = `${count} words`;
     }
 
     function startDojoTimer() {
-      if (timerInterval) return;
-      
-      const startBtn = document.getElementById('btn-timer-start');
-      startBtn.innerText = "Running...";
-      startBtn.classList.replace('bg-blue-600', 'bg-amber-600');
-
+      if (timerInterval) clearInterval(timerInterval);
+      document.getElementById('btn-timer-start').innerText = "▶ Running...";
       timerInterval = setInterval(() => {
         if (timerSeconds <= 0) {
           clearInterval(timerInterval);
-          timerInterval = null;
-          document.getElementById('dojo-timer-display').innerText = "00:00";
-          showToast("Time's up! Complete your self-checklist.", "🔔");
+          showToast("Time's up! Finish your final sentence.");
           return;
         }
         timerSeconds--;
-        updateTimerDisplay();
+        const mins = Math.floor(timerSeconds / 60);
+        const secs = timerSeconds % 60;
+        document.getElementById('dojo-timer-display').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
       }, 1000);
+      showToast("45-minute countdown started!");
     }
 
     function stopDojoTimer() {
       if (timerInterval) {
         clearInterval(timerInterval);
         timerInterval = null;
+        document.getElementById('btn-timer-start').innerText = "▶ Resume";
+        showToast("Timer paused.");
       }
-      const startBtn = document.getElementById('btn-timer-start');
-      startBtn.innerText = "▶ Resume";
-      startBtn.classList.replace('bg-amber-600', 'bg-blue-600');
     }
 
-    function resetDojoTimer() {
-      stopDojoTimer();
-      timerSeconds = 900;
-      updateTimerDisplay();
-      document.getElementById('btn-timer-start').innerText = "▶ Start 15:00";
-    }
-
-    function updateTimerDisplay() {
-      const mins = Math.floor(timerSeconds / 60);
-      const secs = timerSeconds % 60;
-      document.getElementById('dojo-timer-display').innerText = 
-        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    function updateWordCount() {
-      const text = document.getElementById('dojo-editor').value.trim();
-      const words = text ? text.split(/\s+/).length : 0;
-      document.getElementById('dojo-word-count').innerText = `${words} words`;
+    function nextDojoPrompt() {
+      const form = document.getElementById('dojo-form-select').value;
+      const dataSource = currentPaper === 'p1' ? paper1Prompts : vaultPrompts;
+      const list = dataSource[form] || [];
+      if (list.length > 0) {
+        const randomItem = list[Math.floor(Math.random() * list.length)];
+        document.getElementById('dojo-prompt-tag').innerText = randomItem.tag;
+        document.getElementById('dojo-prompt-text').innerText = randomItem.text;
+        showToast("Loaded new random prompt!");
+      }
     }
 
     function logCompletedDrill() {
       drillCount++;
       document.getElementById('hud-drill-count').innerText = drillCount;
-      showToast(`Drill #${drillCount} logged successfully! Keep up the Level 4 practice.`, "🏆");
+      showToast("Drill logged! Keep pushing for Level 4.");
     }
 
-    // INITIALIZATION
     window.onload = function() {
-      loadFormat('speech');
-      renderDynamicChecklist();
+      switchPaper('p2');
     };
   </script>
 </body>
