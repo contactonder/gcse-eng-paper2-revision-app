@@ -59,6 +59,14 @@
       box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
     }
 
+    .subject-btn.active {
+      border-color: #0071e3;
+      background-color: rgba(0, 113, 227, 0.08);
+      box-shadow: 0 2px 10px rgba(0, 113, 227, 0.18);
+    }
+    .subject-btn.active .subject-title { color: #0071e3; }
+    .dark .subject-btn.active .subject-title { color: #60a5fa; }
+
     .nav-tab.active {
       background-color: rgba(255, 255, 255, 1);
       color: #0071e3;
@@ -81,12 +89,12 @@
         </div>
         <div>
           <h1 id="app-paper-title" class="font-bold text-sm md:text-base leading-tight tracking-tight">Paper 2 Writers' Viewpoints & Perspectives</h1>
-          <p class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Level 4 Writing Engine · Grade 8/9</p>
+          <p id="app-subtitle" class="text-[11px] text-gray-500 dark:text-gray-400 font-medium">Level 4 Writing Engine · Grade 8/9</p>
         </div>
       </div>
 
       <!-- DUAL PAPER SWITCHER TOGGLE -->
-      <div class="flex items-center bg-gray-200 dark:bg-gray-900 p-1 rounded-xl border border-black/5 dark:border-white/10">
+      <div id="paper-switcher" class="flex items-center bg-gray-200 dark:bg-gray-900 p-1 rounded-xl border border-black/5 dark:border-white/10">
         <button id="pbtn-p1" onclick="switchPaper('p1')" class="paper-btn px-3 py-1.5 rounded-lg text-xs font-bold transition text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white">
           📄 Paper 1 (Creative)
         </button>
@@ -95,7 +103,7 @@
         </button>
       </div>
 
-      <div class="hidden lg:flex items-center gap-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
+      <div id="hud-marks" class="hidden lg:flex items-center gap-4 text-xs font-semibold text-gray-600 dark:text-gray-300">
         <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-500"></span> AO5: <strong class="text-black dark:text-white">24 Marks</strong></span>
         <span class="text-gray-300 dark:text-gray-700">|</span>
         <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> AO6: <strong class="text-black dark:text-white">16 Marks</strong></span>
@@ -113,10 +121,35 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
-    <!-- NAVIGATION TABS -->
-    <nav class="flex items-center gap-1.5 p-1.5 bg-gray-200/70 dark:bg-gray-900/80 rounded-2xl overflow-x-auto border border-black/5 dark:border-white/5 scrollbar-none">
+    <!-- MAIN SUBJECT SWITCHER -->
+    <div id="subject-switcher" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <button id="subj-lang" onclick="switchSubject('lang')" class="subject-btn active text-left p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#121214] transition cursor-pointer">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">📘</span>
+          <div>
+            <span class="subject-title block font-extrabold text-base tracking-tight">English Language</span>
+            <span class="block text-[11px] text-gray-500 dark:text-gray-400 font-medium">Paper 1 &amp; Paper 2 · Section B (Writing)</span>
+          </div>
+        </div>
+      </button>
+      <button id="subj-lit" onclick="switchSubject('lit')" class="subject-btn text-left p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#121214] transition cursor-pointer">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">📕</span>
+          <div>
+            <span class="subject-title block font-extrabold text-base tracking-tight">English Literature <span class="ml-1 align-middle text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300">NEW</span></span>
+            <span class="block text-[11px] text-gray-500 dark:text-gray-400 font-medium">Quotation Lab · Exam guide</span>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <!-- NAVIGATION TABS (English Language) -->
+    <nav id="lang-nav" class="flex items-center gap-1.5 p-1.5 bg-gray-200/70 dark:bg-gray-900/80 rounded-2xl overflow-x-auto border border-black/5 dark:border-white/5 scrollbar-none">
       <button id="tab-lab" onclick="switchTab('lab')" class="nav-tab active px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">
         📐 Formats
+      </button>
+      <button id="tab-advice" onclick="switchTab('advice')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
+        💡 Examiner Advice
       </button>
       <button id="tab-powerups" onclick="switchTab('powerups')" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white cursor-pointer">
         ⚡ Power-ups
@@ -171,6 +204,16 @@
       </div>
     </section>
 
+    <!-- SECTION: EXAMINER ADVICE (new) -->
+    <section id="sec-advice" class="hidden space-y-6">
+      <div class="border-b border-black/10 dark:border-white/10 pb-4">
+        <span id="advice-paper-badge" class="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">EXAMINER ADVICE</span>
+        <h2 id="advice-paper-heading" class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">One clear view, followed all the way through.</h2>
+        <p id="advice-paper-desc" class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl"></p>
+      </div>
+      <div id="advice-body" class="space-y-4"></div>
+    </section>
+
     <!-- SECTION 2: POWER-UPS -->
     <section id="sec-powerups" class="hidden space-y-6">
       <div class="border-b border-black/10 dark:border-white/10 pb-4">
@@ -186,6 +229,8 @@
       <div id="powerups-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <!-- Rendered dynamically -->
       </div>
+
+      <div id="powerups-extra-box" class="space-y-3"></div>
     </section>
 
     <!-- SECTION AO6: TECHNICAL ACCURACY -->
@@ -207,6 +252,8 @@
       <div id="ao6-examples-box" class="space-y-4">
         <!-- Rendered dynamically -->
       </div>
+
+      <div id="ao6-extra-box" class="space-y-4"></div>
     </section>
 
     <!-- SECTION 3: MARK SCHEME DECODER -->
@@ -306,6 +353,8 @@
           </div>
         </div>
       </div>
+
+      <div id="excerpt-extra-box" class="space-y-4"></div>
     </section>
 
     <!-- SECTION 5: MODEL EXECUTIONS -->
@@ -423,6 +472,8 @@
               ✓ Log Completed Drill
             </button>
           </div>
+
+          <div id="dojo-tips-box"></div>
         </div>
 
         <div class="lg:col-span-7 bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm">
@@ -436,9 +487,20 @@
       </div>
     </section>
 
+    <!-- ENGLISH LITERATURE (placeholder: add content later) -->
+    <section id="sec-literature" class="hidden space-y-6">
+      <div class="border-b border-black/10 dark:border-white/10 pb-4">
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-600 dark:text-amber-400">ENGLISH LITERATURE · AQA 8702</span>
+        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight mt-1">Know the text. Prove it. Analyse it.</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">Start from short quotations: recall them, explore the language, then link to big ideas. More texts and Paper 2 content can be added here.</p>
+      </div>
+      <nav id="lit-nav" class="flex items-center gap-1.5 p-1.5 bg-gray-200/70 dark:bg-gray-900/80 rounded-2xl overflow-x-auto border border-black/5 dark:border-white/5"></nav>
+      <div id="lit-body" class="space-y-4"></div>
+    </section>
+
   </main>
 
-  <footer class="border-t border-black/10 dark:border-white/10 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
+  <footer id="app-footer" class="border-t border-black/10 dark:border-white/10 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
     AQA GCSE English Language (8700/1 & 8700/2) · Dual-Paper Level 4 Writing Engine
   </footer>
 
@@ -449,6 +511,8 @@
 
   <script>
     let currentPaper = 'p2';
+    let currentSubject = 'lang';
+    let lastLangTab = 'lab';
     let currentFormatMode = 'annotated';
     let currentFmt = 'speech';
     let currentExampleFmt = 'speech';
@@ -1005,7 +1069,7 @@
       ],
       speech: [
         "Form Anchor: Formal Greeting + Direct Address to the audience",
-        "Rhetorical Hook: Powerful opening question or bold statistic",
+        "Rhetorical Hook: Powerful opening question or a specific, believable detail (never a made-up statistic)",
         "3-Sentence Stack: Complex -> Compound -> Minor punchline",
         "The Pivot Bridge: Clear counter-argument transition (Granted... nevertheless)",
         "Call to Action: Rule of three imperative commands to close"
@@ -1040,6 +1104,431 @@
       ]
     };
 
+    // =====================================================================
+    // EXAMINER ADVICE ENRICHMENT (from "Advice for Paper 1 Q5" and "Advice for Paper 2 Q5")
+    // =====================================================================
+    const CARD = "bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-3 shadow-sm";
+    const MONO_BOX = "font-mono text-xs bg-gray-100 dark:bg-black/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5";
+
+    const adviceData = {
+      p1: {
+        badge: "PAPER 1 Q5 · EXAMINER ADVICE",
+        heading: "Convincing, crafted, varied and secure.",
+        desc: "Good Paper 1 writing is convincing, crafted, varied and secure. Examiners reward what your language does, not how many techniques you list.",
+        quote: { text: "Linguistic devices are not ticked off by examiners; it is the effectiveness of those features that attracts marks.", src: "Examiner report · November 2023" },
+        before: [
+          { t: "Plan for at least a couple of minutes", d: "Students who planned their structure 'tended to be more successful' (June 2024)." },
+          { t: "Keep the plan short", d: "Some plans were so detailed that they took 'valuable time from elsewhere' (November 2023)." },
+          { t: "Choose one or two structural shifts", d: "Build the whole piece around them, and know the reason for each shift before you start." }
+        ],
+        during: [
+          { t: "Zoom in on a single small detail", d: "'Giving more detail to fewer ideas enables students to write more engaging descriptions' (November 2023)." },
+          { t: "Show, don't tell", d: "Let a gesture, an object or a sound carry the feeling instead of naming it." },
+          { t: "Choose the right word, not the longest one", d: "Examiners keep flagging showy words dropped in to impress: plethora, lackadaisical, discombobulated, obsidian." },
+          { t: "Use devices to serve the story", d: "Overused devices become 'contrived' (June 2025). One extended image that you return to beats ten one-off similes." },
+          { t: "Use all the senses", d: "Sound, smell, touch and taste make a scene feel real, not only sight." },
+          { t: "Keep one consistent voice", d: "Do not change narrator, tone or register without a reason." },
+          { t: "Keep dialogue to a line or two", d: "If you use speech, punctuate it correctly. The advice is to steer well clear of it." },
+          { t: "Do not use lines from books, poems or films", d: "Use your own words and your own images." }
+        ],
+        structureIntro: "Level 4 writing is planned, not accidental. Pick one or two structural shifts and build the piece around them. There must be a reason for each shift: 'binary' switches confuse examiners (June 2023).",
+        shifts: [
+          { n: "Time shift", d: "Dawn to dusk, summer to winter, or the same place now and 50 years ago." },
+          { n: "Focus shift", d: "Wide view, then zoom in on one detail, then zoom back out." },
+          { n: "Mood shift", d: "Calm to unsettled, or confident to cautious." },
+          { n: "Perspective shift", d: "The same scene through a second character's eyes." },
+          { n: "Cyclical structure", d: "End by returning to your opening image, changed in some way." }
+        ],
+        ending: "You do not need to resolve anything. Hook the reader, build the world, and end on a question or a tension that makes them want to read on.",
+        plans: [
+          { title: "Rough plan · Image task", steps: ["Hook: one striking detail, close up", "Pull back to set the scene and mood", "Develop with senses and a second detail", "The shift (time, weather, arrival of a person)", "Explore the changed scene", "Echo the opening, now changed"] },
+          { title: "Rough plan · Story opening task", steps: ["Start in the action, a moment of tension", "Who, where and what is at stake", "Build tension through small actions", "The turn: discovery, decision or change", "Slow down: show the reaction in detail", "Stop on a moment: quietly resolved or not"] }
+        ],
+        problems: [
+          ["Trying to tell a whole story, so it feels rushed", "Write one episode; stop on a moment"],
+          ["Touring the picture detail by detail, like a list", "Pick 2–3 details and imagine beyond the frame"],
+          ["Showy vocabulary that doesn't fit", "Choose the exact word for the mood"],
+          ["Pre-learned paragraphs or borrowed lines", "Use learned material only as a starting point"],
+          ["Long stretches of dialogue", "One or two short lines, punctuated correctly"],
+          ["Sudden, unexplained changes", "Give every shift a cause in the writing"],
+          ["Gore, murder or huge disasters", "Focus on a small, human part of a bigger event"],
+          ["'It was all a dream' or a miraculous ending", "An open or quietly resolved ending"],
+          ["Very short answers after a strong start", "Stick to the 45-minute plan"]
+        ],
+        evidence: [
+          { q: "Students who planned their structure 'tended to be more successful'.", s: "June 2024" },
+          { q: "Over-detailed plans took 'valuable time from elsewhere'.", s: "November 2023" },
+          { q: "'Giving more detail to fewer ideas enables students to write more engaging descriptions.'", s: "November 2023" },
+          { q: "Overused devices become 'contrived'.", s: "June 2025" },
+          { q: "'Binary' structural switches confuse examiners.", s: "June 2023" },
+          { q: "Strong writing is 'secure with sentence demarcation, control of agreement and punctuation, without trying to over-complicate sentences'.", s: "June 2024" }
+        ]
+      },
+      p2: {
+        badge: "PAPER 2 Q5 · EXAMINER ADVICE",
+        heading: "One clear view, followed all the way through.",
+        desc: "You get a statement on an issue and argue your view in a set form for a set audience. The statement usually leads you to agree, but you may disagree. Choose a view and stay with it.",
+        quote: { text: "The generation of ideas must be the precursor to starting to write a response.", src: "Examiner report · November 2023" },
+        before: [
+          { t: "Plan for at least a couple of minutes", d: "Generate your ideas first, then write." },
+          { t: "Choose 2–3 core ideas, not six or seven", d: "Depth beats breadth." },
+          { t: "Decide your view before you start", d: "Agree or disagree, but pick one. The strongest answers 'took one perspective and followed it through to the end' (November 2021)." }
+        ],
+        during: [
+          { t: "Find your own voice", d: "Write like a thoughtful person talking to this audience, not like a template." },
+          { t: "Write about what you know", d: "Use believable, specific examples from your own life and community." },
+          { t: "Don't invent evidence that's clearly fake", d: "Made-up statistics and experts are a common problem. Use believable, specific examples." },
+          { t: "Talk to your audience", d: "Address them directly and keep the form and register in mind." },
+          { t: "Remember that the right word is not always the long word", d: "Clumsy 'ambitious' words hurt you. Aim for precision." },
+          { t: "Use literary devices with control", d: "Choose a few and use them well." },
+          { t: "Don't rant", d: "A calm, reasoned voice is more convincing than anger." }
+        ],
+        structureIntro: "Every paragraph should push the same argument forward. Weaker answers take each part of the statement and give 'a different point of view on each', which breaks the argument apart (November 2020).",
+        shifts: [
+          { n: "Openings", d: "Start with something specific: a moment in time, or a direct challenge to the reader." },
+          { n: "Endings", d: "Circle back to your opening and finish with a clear call to action or a memorable line." },
+          { n: "Links", d: "Go beyond 'Firstly, Secondly'. Use markers like 'This is precisely why...' and 'Consider, too...'." },
+          { n: "Length", d: "Aim for 2–3 pages. Examiners can usually see the level 'by the end of the first page' (June 2024). Beyond three sides, answers often repeat points and lose accuracy." },
+          { n: "Sentence mix", d: "Mix statements, questions, commands and short punchy lines. Vary how sentences begin." }
+        ],
+        ending: "Quality beats quantity. Take one clear view, use counter-arguments to strengthen it, and never flip-flop between agreeing and disagreeing.",
+        plans: [
+          { title: "Rough plan · Argument", steps: ["Hook: state your view, use a short anecdote or striking detail", "First point: a logical argument grounded in evidence and real detail, including a counter-argument", "Second point: an ethical argument framed around fairness and the local community", "Third point: an emotional response based on personal experience", "Ending: echo the opening and include a call to action"] }
+        ],
+        modelOpening: [
+          { s: "A typical Saturday afternoon in the centre of town.", n: "Specific moment in time" },
+          { s: "It's packed with shoppers armed with multiple carrier bags from high street stores.", n: "Concrete, visual detail the audience knows" },
+          { s: "Many of those bags will be filled with fashion items: jeans, t-shirts, hoodies, outfits for a party or a night out.", n: "Colon introduces a specific list" },
+          { s: "But how many times will those garments be worn?", n: "Rhetorical question challenges the reader" },
+          { s: "And although they might have been a bargain that afternoon – what might be the real cost of that high street shopping trip?", n: "Dash aside plus a final question that sets up the argument" }
+        ],
+        problems: [
+          ["Flip-flopping between agreeing and disagreeing", "Take one clear view, use counter-arguments"],
+          ["Pre-prepared templates with the topic slotted in", "Ignore TikTok promises of Grade 9 writing"],
+          ["Clumsy use of 'ambitious' words", "Showing off rarely works; aim for precision"],
+          ["Made-up statistics and experts", "Use believable, specific examples"],
+          ["Quotations from famous people", "Use your own words to make your point"],
+          ["Use of subheadings, columns and drawings", "Use linked paragraphs and discourse markers"],
+          ["Copying ideas and phrases from the sources", "Use the sources as a 'spark' for your own ideas"],
+          ["Very short or very long pieces", "Aim for 2–3 pages"]
+        ],
+        evidence: [
+          { q: "'The generation of ideas must be the precursor to starting to write a response.'", s: "November 2023" },
+          { q: "The strongest answers 'took one perspective and followed it through to the end', with less 'flip flopping back and forth'.", s: "November 2021" },
+          { q: "Weaker answers give 'a different point of view on each' part of the statement.", s: "November 2020" },
+          { q: "Examiners can usually see the level 'by the end of the first page'.", s: "June 2024" },
+          { q: "Top answers use 'a wide variety of punctuation to support more complex grammatical structures'.", s: "November 2021" },
+          { q: "Some students 'struggled to maintain secure syntax over a number of pages'.", s: "June 2024" }
+        ]
+      }
+    };
+
+    const punctuationToolkit = {
+      p1: [
+        { m: "Semi-colon  ;", u: "Join two linked clauses.", e: "The street was empty; the town was fast asleep." },
+        { m: "Colon  :", u: "Reveal or explain.", e: "Only one light remained: the lighthouse." },
+        { m: "Dashes  – –", u: "Add an interruption or aside.", e: "The house – abandoned for years – groaned." },
+        { m: "Brackets  ( )", u: "Add a quiet aside.", e: "Her grandfather (who never smiled) was smiling." },
+        { m: "Ellipsis  ...", u: "Show hesitation or trailing off.", e: "And then... nothing." },
+        { m: "Question  ?", u: "An internal question.", e: "Who had left the gate open?" }
+      ],
+      p2: [
+        { m: "Semi-colon  ;", u: "Balance two linked points.", e: "Cars offer freedom; buses offer a future." },
+        { m: "Colon  :", u: "Emphasise a key point or idea.", e: "The answer is simple: make buses cheaper." },
+        { m: "Dashes  – –", u: "Add a conversational aside.", e: "The council – to its credit – has listened." },
+        { m: "Brackets  ( )", u: "Add a quiet aside.", e: "Fares (already high) rose again." },
+        { m: "Exclamation  !", u: "Use rarely: once at most.", e: "Enough is enough!" },
+        { m: "Rhetorical question  ?", u: "Challenge the reader.", e: "Who, exactly, benefits from this?" }
+      ]
+    };
+
+    const extraPowerUps = {
+      p1: [
+        { tag: "EXAMINER MOVE 04", c: "blue", h: "The Extended Image", p: "Choose one image and return to it. One extended image beats ten one-off similes.", ex: "The fog was a held breath. By the harbour, it began to let go." },
+        { tag: "EXAMINER MOVE 05", c: "emerald", h: "The Focus Zoom", p: "Wide view, then one small detail, then wide again.", ex: "The whole street slept. Behind one window, a kettle clicked off. The street slept on." },
+        { tag: "EXAMINER MOVE 06", c: "purple", h: "The Caused Shift", p: "Every change of time, mood or place needs a reason inside the writing.", ex: "Then the wind turned; the smell of smoke reached the garden." },
+        { tag: "EXAMINER MOVE 07", c: "amber", h: "The Open Ending", p: "Stop on a moment, a question or a tension. No 'it was all a dream'.", ex: "Who had left the gate open?" }
+      ],
+      p2: [
+        { tag: "EXAMINER MOVE 04", c: "blue", h: "The Specific Opening", p: "Begin with a moment in time or a direct challenge to the reader.", ex: "A typical Saturday afternoon in the centre of town." },
+        { tag: "EXAMINER MOVE 05", c: "emerald", h: "The Linking Marker", p: "Go beyond 'Firstly, Secondly'. Make each paragraph push the same argument forward.", ex: "This is precisely why... / Consider, too..." },
+        { tag: "EXAMINER MOVE 06", c: "purple", h: "The Counter Inside One View", p: "Mention the other side only to strengthen your own. Never flip-flop.", ex: "Some say cars are quicker; speed is not what our town is short of." },
+        { tag: "EXAMINER MOVE 07", c: "amber", h: "The Echo Ending", p: "Circle back to your opening, then finish with a call to action or a memorable line.", ex: "Next time you carry that bag home, ask yourself one question." }
+      ]
+    };
+
+    const colorTag = {
+      blue: "bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300",
+      emerald: "bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300",
+      purple: "bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300",
+      amber: "bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300"
+    };
+
+    // Extra self-check items (shown with a 💡 icon)
+    (function enrichChecklists() {
+      const p1Common = [
+        "💡 One episode only: write one moment and stop on it (no rushed whole story)",
+        "💡 Every structural shift has a reason; use only one or two shifts",
+        "💡 Exact words, not showy words (avoid plethora, lackadaisical, discombobulated, obsidian)",
+        "💡 Devices serve the story: one extended image beats ten similes",
+        "💡 Dialogue is one or two short lines, correctly punctuated (or avoided)",
+        "💡 Small and human: no gore, murder or huge disasters; no 'it was all a dream'",
+        "💡 End on a moment, a question or a tension; no need to resolve"
+      ];
+      const p2Common = [
+        "💡 Planned for a couple of minutes: one clear view and 2–3 core ideas",
+        "💡 One view followed to the end: counter-arguments, but no flip-flopping",
+        "💡 No made-up statistics or experts; no quotations from famous people",
+        "💡 Links go beyond 'Firstly, Secondly' (e.g. 'This is precisely why...', 'Consider, too...')",
+        "💡 Layout stays light: carry the argument in linked paragraphs, not subheadings, columns or drawings",
+        "💡 Punctuation range: ; : – ( ) ? and at most one exclamation mark",
+        "💡 Sentence mix: statements, questions, commands and short punchy lines",
+        "💡 Ending echoes the opening; length is about 2–3 pages; proofread at the end"
+      ];
+      ['narrative', 'descriptive'].forEach(k => dynamicChecklists[k].push(...p1Common));
+      ['speech', 'article', 'letter', 'leaflet', 'essay'].forEach(k => dynamicChecklists[k].push(...p2Common));
+      dynamicChecklists.descriptive.push("💡 Pick 2–3 details and imagine beyond the frame: do not tour the picture like a list");
+    })();
+
+    function renderAdviceSection() {
+      const isP1 = currentPaper === 'p1';
+      const d = isP1 ? adviceData.p1 : adviceData.p2;
+      document.getElementById('advice-paper-badge').innerText = d.badge;
+      document.getElementById('advice-paper-heading').innerText = d.heading;
+      document.getElementById('advice-paper-desc').innerText = d.desc;
+
+      const listItems = arr => arr.map(x => `
+        <li class="flex gap-2">
+          <span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+          <span><strong class="text-black dark:text-white">${x.t}.</strong> <span class="text-gray-600 dark:text-gray-400">${x.d}</span></span>
+        </li>`).join('');
+
+      const stepsHtml = d.plans.map(plan => `
+        <div class="${CARD}">
+          <span class="text-xs font-mono font-bold text-gray-500 uppercase">${plan.title}</span>
+          <ol class="space-y-2">
+            ${plan.steps.map((s, i) => `
+              <li class="flex items-start gap-3 text-xs">
+                <span class="shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[11px]">${i + 1}</span>
+                <span class="text-gray-700 dark:text-gray-300 pt-0.5">${s}</span>
+              </li>`).join('')}
+          </ol>
+        </div>`).join('');
+
+      const modelOpening = (!isP1 && d.modelOpening) ? `
+        <div class="${CARD}">
+          <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
+            <span class="text-xs font-mono font-bold text-gray-500 uppercase">Model opening · annotated</span>
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">TOPIC: FAST FASHION</span>
+          </div>
+          <div class="space-y-2">
+            ${d.modelOpening.map(m => `
+              <div class="space-y-1">
+                <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed bg-gray-50 dark:bg-black/40 p-3 rounded-lg border border-black/5 dark:border-white/5">${m.s}</p>
+                <span class="inline-block text-[11px] font-mono bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded font-bold">${m.n}</span>
+              </div>`).join('')}
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Use this as a guide to get started, not as a template to copy.</p>
+        </div>` : '';
+
+      document.getElementById('advice-body').innerHTML = `
+        <div class="bg-blue-500/10 border border-blue-500/30 rounded-2xl p-5 text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
+          <strong class="font-bold block text-sm mb-1">“${d.quote.text}”</strong>
+          <span class="font-mono opacity-80">${d.quote.src}</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+          <div class="lg:col-span-5 ${CARD}">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag.amber}">BEFORE YOU WRITE</span>
+            <ul class="space-y-3 text-xs">${listItems(d.before)}</ul>
+          </div>
+          <div class="lg:col-span-7 ${CARD}">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag.emerald}">WHEN YOU WRITE</span>
+            <ul class="space-y-3 text-xs">${listItems(d.during)}</ul>
+          </div>
+        </div>
+
+        <div class="${CARD}">
+          <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag.purple}">STRUCTURE</span>
+          <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${d.structureIntro}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-${isP1 ? '5' : '3'} gap-3">
+            ${d.shifts.map(s => `
+              <div class="bg-gray-100 dark:bg-black/60 border border-black/5 dark:border-white/10 rounded-xl p-3 space-y-1">
+                <strong class="text-xs font-bold block text-blue-600 dark:text-blue-400">${s.n}</strong>
+                <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${s.d}</p>
+              </div>`).join('')}
+          </div>
+          <p class="text-xs font-semibold text-gray-800 dark:text-gray-200 border-l-4 border-blue-500 pl-3">${d.ending}</p>
+        </div>
+
+        <div class="grid grid-cols-1 ${d.plans.length > 1 ? 'md:grid-cols-2' : ''} gap-4">${stepsHtml}</div>
+
+        ${modelOpening}
+
+        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm">
+          <div class="p-4 border-b border-black/10 dark:border-white/10">
+            <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag.amber}">COMMON PROBLEMS AND SOLUTIONS</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-gray-100 dark:bg-gray-900/80 text-gray-500 dark:text-gray-400 font-mono border-b border-black/10 dark:border-white/10">
+                  <th class="p-3 w-1/2">❌ Problem</th>
+                  <th class="p-3">✅ Solution</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-black/5 dark:divide-white/5">
+                ${d.problems.map(r => `
+                  <tr>
+                    <td class="p-3 text-rose-600 dark:text-rose-400 font-medium">${r[0]}</td>
+                    <td class="p-3 text-emerald-700 dark:text-emerald-400">${r[1]}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-5 text-xs text-emerald-900 dark:text-emerald-200 leading-relaxed flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <strong class="font-bold block text-sm mb-1">Technical accuracy (AO6)</strong>
+            The punctuation toolkit, sentence variety rules and watch-outs for this paper are in the AO6 tab.
+          </div>
+          <button onclick="switchTab('ao6')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition cursor-pointer whitespace-nowrap">Open AO6 Technical →</button>
+        </div>
+      `;
+    }
+
+    function renderPowerUpsExtra() {
+      const isP1 = currentPaper === 'p1';
+      const list = isP1 ? extraPowerUps.p1 : extraPowerUps.p2;
+      document.getElementById('powerups-extra-box').innerHTML = `
+        <div class="pt-2">
+          <span class="text-xs font-mono font-bold text-gray-500 uppercase">Examiner-backed extra moves · ${isP1 ? 'Paper 1' : 'Paper 2'}</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${list.map(u => `
+            <div class="${CARD.replace('space-y-3', 'space-y-2')}">
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag[u.c]}">${u.tag}</span>
+              <h3 class="font-bold text-sm">${u.h}</h3>
+              <p class="text-xs text-gray-600 dark:text-gray-400">${u.p}</p>
+              <div class="${MONO_BOX}">"${u.ex}"</div>
+            </div>`).join('')}
+        </div>
+      `;
+    }
+
+    function renderAO6Extra() {
+      const isP1 = currentPaper === 'p1';
+      const kit = isP1 ? punctuationToolkit.p1 : punctuationToolkit.p2;
+      const watch = isP1 ? [
+        "Showy words: examiners flag plethora, lackadaisical, discombobulated and obsidian. Choose the exact word for the mood.",
+        "Avoid strings of three random words, such as 'Scorching. Melting. Painful.' A short sentence works best after a long one.",
+        "Do not over-complicate sentences. Strong writing is secure with demarcation, agreement and punctuation (June 2024).",
+        "Use simple, compound and complex sentences, and vary how they begin.",
+        "Punctuate speech correctly if you use any at all. The advice is to steer well clear."
+      ] : [
+        "Use 'a wide variety of punctuation to support more complex grammatical structures'. Weaker answers show little sentence variety and miss out punctuation marks (November 2021).",
+        "Mix statements, questions, commands and short punchy lines; vary how sentences begin.",
+        "Exclamation marks: once at most.",
+        "Stay in control right to the end. Some students 'struggled to maintain secure syntax over a number of pages' (June 2024).",
+        "The right word is not always the long word. Clumsy 'ambitious' words cost marks, so aim for precision. Proofread at the end."
+      ];
+      document.getElementById('ao6-extra-box').innerHTML = `
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-bold text-gray-500 uppercase">${isP1 ? 'Paper 1' : 'Paper 2'} punctuation toolkit · examiner advice</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            ${kit.map((k, i) => `
+              <div class="${CARD.replace('space-y-3', 'space-y-2')}">
+                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag[['blue','emerald','purple','amber'][i % 4]]}">${k.m}</span>
+                <p class="text-xs text-gray-600 dark:text-gray-400">${k.u}</p>
+                <div class="${MONO_BOX}">${k.e}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <div class="${CARD}">
+          <span class="text-xs font-mono font-bold text-rose-600 dark:text-rose-400 uppercase">Watch-outs</span>
+          <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1.5 list-disc pl-4">
+            ${watch.map(w => `<li>${w}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    function renderDecoderExtra() {
+      const isP1 = currentPaper === 'p1';
+      const row = (a, b, c, d, color) => `
+        <tr>
+          <td class="p-3 font-bold ${color || 'text-purple-600 dark:text-purple-400'}">${a}</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">${b}</td>
+          <td class="p-3 text-gray-700 dark:text-gray-300">${c}</td>
+          <td class="p-3 font-mono text-emerald-600 dark:text-emerald-400">${d}</td>
+        </tr>`;
+      const rows = isP1 ? [
+        row("💡 Devices", "Effectiveness of features attracts marks; they are not ticked off", "A few devices used well beat a long list", "1 extended image > 10 one-off similes"),
+        row("💡 Structure", "Planned, not accidental; each shift needs a reason; 'binary' switches confuse", "Choose one or two shifts and give each a cause", "Time / Focus / Mood / Perspective / Cyclical"),
+        row("💡 Ending", "You do not need to resolve anything", "Stop on a moment, a question or a tension", "Echo or question → stop"),
+        row("💡 Detail", "Giving more detail to fewer ideas makes writing more engaging", "Depth over breadth: 2–3 details, fully explored", "Zoom in → senses → second detail")
+      ] : [
+        row("💡 AO5 Viewpoint", "One perspective followed through to the end", "Take one side. Use counter-arguments to strengthen it", "View → 2–3 core ideas → counter inside one view"),
+        row("💡 AO5 Structure", "Every paragraph pushes the same argument forward", "Link with 'This is precisely why...' and 'Consider, too...'", "Hook → logic → ethics → emotion → echo + call to action"),
+        row("💡 AO6 Range", "A wide variety of punctuation supports complex structures", "Use ; : – ( ) ? and one ! at most", "Statement / question / command / short punchy line"),
+        row("💡 Length", "The level is usually visible by the end of the first page", "2–3 pages; writing beyond three sides repeats and loses accuracy", "Quality > quantity")
+      ];
+      document.getElementById('decoder-table-body').insertAdjacentHTML('beforeend', rows.join(''));
+    }
+
+    function renderExcerptExtra() {
+      const isP1 = currentPaper === 'p1';
+      const d = isP1 ? adviceData.p1 : adviceData.p2;
+      document.getElementById('excerpt-extra-box').innerHTML = `
+        <div class="${CARD}">
+          <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
+            <h3 class="text-lg font-bold">What examiners actually wrote</h3>
+            <span class="px-3 py-1 rounded-full text-xs font-bold font-mono bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-500/30">${isP1 ? 'PAPER 1' : 'PAPER 2'}</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${d.evidence.map(e => `
+              <div class="bg-gray-50 dark:bg-black/40 p-4 rounded-xl border border-black/5 dark:border-white/10 space-y-1">
+                <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed">${e.q}</p>
+                <span class="text-[11px] font-mono font-bold text-blue-600 dark:text-blue-400">${e.s}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDojoTips() {
+      const isP1 = currentPaper === 'p1';
+      const tips = isP1 ? [
+        "Plan for a couple of minutes, but keep the plan short.",
+        "Write one episode. Stop on a moment.",
+        "Stick to your 45-minute plan so a strong start does not fade into a rushed ending.",
+        "Leave time to check sentence boundaries and any speech punctuation."
+      ] : [
+        "Plan for a couple of minutes: your view and 2–3 core ideas.",
+        "Aim for 2–3 pages. The level shows by the end of the first page.",
+        "Stay in control of your syntax to the very end.",
+        "Keep time to proofread."
+      ];
+      document.getElementById('dojo-tips-box').innerHTML = `
+        <div class="bg-white dark:bg-[#121214] border border-black/10 dark:border-white/10 rounded-2xl p-5 space-y-2 shadow-sm">
+          <strong class="text-xs font-bold uppercase tracking-wider block border-b border-black/10 dark:border-white/10 pb-2">⏱️ Time and Length Guide</strong>
+          <ul class="text-xs text-gray-700 dark:text-gray-300 space-y-1.5 list-disc pl-4">
+            ${tips.map(t => `<li>${t}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    function renderAdviceEnrichment() {
+      renderAdviceSection();
+      renderPowerUpsExtra();
+      renderAO6Extra();
+      renderDecoderExtra();
+      renderExcerptExtra();
+      renderDojoTips();
+    }
+
     function switchPaper(paperKey) {
       currentPaper = paperKey;
       const btnP1 = document.getElementById('pbtn-p1');
@@ -1069,10 +1558,156 @@
       renderExampleButtons();
       renderVaultButtons();
       renderDojoDropdown();
+      renderAdviceEnrichment();
       showToast(`Switched to ${paperKey === 'p1' ? 'Paper 1 (Creative Writing)' : 'Paper 2 (Transactional Writing)'}`);
     }
 
+    // ===================== ENGLISH LITERATURE =====================
+    const LIT_Q = {
+      carol: { t: "A Christmas Carol", g: [
+        ["Stave One", ["As solitary as an oyster", "Hard and sharp as flint", "The cold within him froze his old features", "decrease the surplus population", "I wear the chain I forged in life"]],
+        ["Stave Two", ["It was a strange figure", "A solitary child neglected by his friends", "They shone in every part of the dance like moons", "Another idol has displaced me", "Remove me from this place"]],
+        ["Stave Three", ["These young Cratchits danced about the table", "Nobody said or thought it was at all a small pudding for a large family", "Bob held his withered little hand in his", "I think that he loses some pleasant moments", "Yellow, meagre, ragged, scowling, wolfish"]],
+        ["Stave Four", ["It's likely to be a very cheap funeral", "He frightened everyone away from him when he was alive", "Spirit of Tiny Tim, thy childish essence was from God", "I am not the man I was", "I will honour Christmas"]],
+        ["Stave Five", ["I will live in the Past, the Present, and the Future", "Not the little prize turkey: the big one", "Wonderful party, wonderful games, wonderful unanimity", "I’ll raise your salary", "Scrooge was better than his word"]]] },
+      macbeth: { t: "Macbeth", g: [
+        ["Act 1", ["But all’s too weak for brave Macbeth", "If chance will have me king, why chance may crown me without my stir", "Look like th’innocent flower, but be the serpent under’t", "We will proceed no further in this business", "False face must hide what the false heart doth know"]],
+        ["Act 2", ["Is this a dagger which I see before me", "This is a sorry sight", "My hands are of your colour, but I shame to wear a heart so white", "O horror, horror, horror", "Dark night strangles the travelling lamp"]],
+        ["Act 3", ["I fear thou play’dst most foully for’t", "Our fears in Banquo stick deep", "O full of scorpions is my mind", "Never shake thy gory locks at me", "You lack the season of all natures, sleep"]],
+        ["Act 4", ["Horrible sight", "Bleed, bleed, poor country", "O Scotland, Scotland", "Wife, servants, children, all", "O hell-kite"]],
+        ["Act 5", ["Out damned spot, out I say", "I’ll fight, till from my bones my flesh be hacked", "Out, out, brief candle", "Turn hell-hound, turn", "This dead butcher, and his fiend-like queen"]]] },
+      inspector: { t: "An Inspector Calls", g: [
+        ["Act One", ["As if we were all mixed-up together like bees in a hive", "It’s my duty to keep labour costs down", "But these girls aren’t cheap labour", "I couldn’t be sorry for her", "Why – you fool – he knows"]],
+        ["Act Two", ["I hate those hard-eyed, dough-faced women", "He’s a notorious womaniser and one of the worst sots and rogues in Brumley", "You were the wonderful fairy prince", "We’ve done a great deal of useful work in helping deserving cases", "I think she had only herself to blame", "Secondly, I blame the young man who was the father of the child"]],
+        ["Act Three", ["I was in a state where one easily turns nasty", "We are members of one body", "There’ll be a public scandal", "You’re beginning to pretend now that nothing’s really happened at all", "He was our police inspector, all right"]]] },
+      poetry: { t: "Power and Conflict Poetry", poem: true, g: [
+        ["War", [["Into the valley of Death", "The Charge of the Light Brigade"], ["But nothing happens", "Exposure"], ["Suddenly he awoke and was running", "Bayonet Charge"], ["Dream, and he’s torn apart by a dozen rounds", ""], ["A hundred agonies in black-and-white", "War Photographer"]]],
+        ["Fear", [["With trembling oars I turned", "The Prelude"], ["Worried by silence, sentries whisper, curious, nervous", "Exposure"], ["Strange, it is a huge nothing that we fear", "Storm on the Island"], ["His terror’s touchy dynamite", "Bayonet Charge"], ["He’s here in my head when I close my eyes", "Remains"]]],
+        ["Authority", [["Look on my works, ye Mighty and despair", "Ozymandias"], ["I wandered through each chartered street", "London"], ["I gave commands", "My Last Duchess"], ["Dem tell me", "Checking Out Me History"], ["Her father embarked at sunrise", "Kamikaze"]]],
+        ["Defiance", [["The mind forged manacles I hear", "London"], ["We are prepared", "Storm on the Island"], ["I am branded by an impression of sunlight", "The Emigrée"], ["I checking out me own history", "Checking Out Me History"], ["My mother never spoke again", "Kamikaze"]]],
+        ["Relationships", [["A heart – how shall I say? – too soon made glad", "My Last Duchess"], ["Sellotape bandaged around my hand", "Poppies"], ["How he sought approval", ""], ["Trace a grand design with living tissue", "Tissue"], ["Her father embarked at sunrise", "Kamikaze"]]],
+        ["Nature", [["The lone and level sands stretch far away", "Ozymandias"], ["Small circles glittering idly in the moon", "The Prelude"], ["Dawn massing in the east her melancholy army", "Exposure"], ["But there are no trees, no natural shelter", "Storm on the Island"], ["A tuna, the dark prince, muscular, dangerous", "Kamikaze"]]]] }
+    };
+    const LIT_STEPS = [
+      { h: "1 · Retrieve", c: "amber", p: ["Who is speaking, or being described?", "Where are we in the text, and what has just happened?", "For a poem: which poem is it, and who is the speaker?"] },
+      { h: "2 · Language", c: "blue", p: ["Pick the one or two most important words. What do they suggest (connotations)?", "Why did the writer choose these words and images? Focus on the effect, not the technique name.", "Can the image be read in more than one way? Use tentative words: 'perhaps', 'suggests'."] },
+      { h: "3 · Big ideas", c: "emerald", p: ["Which theme does this link to (e.g. ambition, kindness, responsibility, power, conflict)?", "Where else in the text or in another poem does this idea appear?", "What is the writer saying about human nature? Keep context brief and relevant."] }
+    ];
+    const LIT_QS = [["Macbeth", "How far is Macbeth presented as an ambitious character?"], ["Romeo and Juliet", "How are relationships between parents and children presented?"], ["The Tempest", "How far is Caliban presented as a victim?"], ["The Merchant of Venice", "How are attitudes to wealth presented?"], ["Much Ado About Nothing", "How far are women presented as powerless?"], ["Julius Caesar", "How are ideas about loyalty presented?"], ["Jekyll and Hyde", "How are ideas about hidden lives and secrets presented?"], ["A Christmas Carol", "How is the importance of kindness presented?"], ["Great Expectations", "How far is Miss Havisham presented as a victim?"], ["Jane Eyre", "How far is Jane presented as a vulnerable character?"], ["Frankenstein", "How is the importance of family presented?"], ["Pride and Prejudice", "How far does Elizabeth change her views of others?"], ["The Sign of Four", "How is an atmosphere of mystery and suspense created?"]];
+    let litTab = 'quotes';
+    let litS = { text: 'carol', group: 'all', deck: [], i: 0, step: -1, got: 0, miss: 0, missed: [] };
+
+    function litBox(inner, extra) { return `<div class="${CARD} ${extra || ''}">${inner}</div>`; }
+    function litTag(txt, c) { return `<span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${colorTag[c || 'blue']}">${txt}</span>`; }
+
+    function renderLit(tab) {
+      if (tab) litTab = tab;
+      const tabs = [['quotes', '💬 Quotation Lab'], ['overview', '📋 Exam Overview'], ['marks', '🎯 Mark Scheme & Tips'], ['qbank', '📝 Paper 1 Questions']];
+      document.getElementById('lit-nav').innerHTML = tabs.map(t => `<button onclick="renderLit('${t[0]}')" class="nav-tab ${litTab === t[0] ? 'active' : 'text-gray-600 dark:text-gray-400'} px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer">${t[1]}</button>`).join('');
+      const body = document.getElementById('lit-body');
+      if (litTab === 'quotes') return litQuotes(body);
+      if (litTab === 'overview') return litOverview(body);
+      if (litTab === 'marks') return litMarks(body);
+      body.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3">${LIT_QS.map((q, i) => litBox(`<div class="flex items-center justify-between">${litTag('Q' + (i + 1) + (i < 6 ? ' · SECTION A' : ' · SECTION B'), i < 6 ? 'blue' : 'purple')}<strong class="text-xs">${q[0]}</strong></div><p class="text-xs text-gray-700 dark:text-gray-300">Starting with this ${i < 6 ? 'extract' : 'extract'}, explore ${q[1].charAt(0).toLowerCase() + q[1].slice(1)}</p>`, 'space-y-2')).join('')}</div><p class="text-xs text-gray-500 dark:text-gray-400">AQA 8702/1, June 2025. Each question: one part on the extract, one part on the whole text. Section A adds 4 AO4 marks.</p>`;
+    }
+
+    function litStart() {
+      const src = LIT_Q[litS.text];
+      let items = [];
+      src.g.forEach(g => { if (litS.group === 'all' || litS.group === g[0]) g[1].forEach(q => items.push({ q: Array.isArray(q) ? q[0] : q, poem: Array.isArray(q) ? q[1] : null, grp: g[0] })); });
+      for (let k = items.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [items[k], items[j]] = [items[j], items[k]]; }
+      litS.deck = items; litS.i = 0; litS.step = -1; litS.got = 0; litS.miss = 0; litS.missed = [];
+    }
+    function litSet(k, v) { litS[k] = v; if (k === 'text') litS.group = 'all'; litStart(); renderLit(); }
+    function litNext(ok) { const c = litS.deck[litS.i]; if (ok) litS.got++; else { litS.miss++; litS.missed.push(c); } litS.i++; litS.step = -1; renderLit(); }
+    function litAdv() { litS.step++; renderLit(); }
+    function litRetry() { litS.deck = litS.missed.slice(); litS.i = 0; litS.step = -1; litS.got = 0; litS.miss = 0; litS.missed = []; renderLit(); }
+
+    function litQuotes(body) {
+      if (!litS.deck.length) litStart();
+      const src = LIT_Q[litS.text];
+      const btn = (on, t, f) => `<button onclick="${f}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${on ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700'}">${t}</button>`;
+      const head = `
+        <div class="flex flex-wrap gap-2">${Object.keys(LIT_Q).map(k => btn(litS.text === k, LIT_Q[k].t, `litSet('text','${k}')`)).join('')}</div>
+        <div class="flex flex-wrap gap-2">${btn(litS.group === 'all', 'All', "litSet('group','all')")}${src.g.map(g => btn(litS.group === g[0], g[0], `litSet('group','${g[0]}')`)).join('')}</div>`;
+      const done = litS.i >= litS.deck.length;
+      let card;
+      if (done) {
+        card = litBox(`<h3 class="font-bold text-lg">Round complete 🎉</h3><p class="text-xs text-gray-700 dark:text-gray-300">Recalled: <b class="text-emerald-600">${litS.got}</b> · Review again: <b class="text-rose-600">${litS.miss}</b> (of ${litS.deck.length})</p><div class="flex gap-2">${litS.miss ? `<button onclick="litRetry()" class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold cursor-pointer">Practise the ${litS.miss} to review</button>` : ''}<button onclick="litStart();renderLit()" class="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-800 text-xs font-bold cursor-pointer">New shuffle</button></div>`, 'text-center');
+      } else {
+        const c = litS.deck[litS.i], s = litS.step;
+        const src2 = src.poem ? `${c.grp} cluster · ${c.poem ? '<b>' + c.poem + '</b>' : '<b>check your anthology</b>'}` : `<b>${src.t}</b> · ${c.grp}`;
+        const st = LIT_STEPS.slice(0, Math.max(0, s)).map(x => `<div class="bg-gray-50 dark:bg-black/40 rounded-xl p-3 border border-black/5 dark:border-white/10 space-y-1">${litTag(x.h, x.c)}<ul class="text-xs text-gray-700 dark:text-gray-300 list-disc pl-4 space-y-1">${x.p.map(p => `<li>${p}</li>`).join('')}</ul></div>`).join('');
+        card = litBox(`
+          <div class="flex justify-between text-[11px] font-mono text-gray-500"><span>${litS.i + 1} / ${litS.deck.length}</span><span>✓ ${litS.got} · ↻ ${litS.miss}</span></div>
+          <p class="text-xl md:text-2xl font-bold italic text-center py-4">“${c.q}”</p>
+          ${s < 0 ? `<p class="text-xs text-center text-gray-500">Say it out loud first: where is it from, and who or what is it about?</p>` : `<p class="text-xs text-center text-gray-700 dark:text-gray-300">Source: ${src2}</p>`}
+          ${st}
+          <div class="flex flex-wrap gap-2 justify-center pt-1">
+            ${s < 0 ? `<button onclick="litAdv()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer">Reveal source</button>` : ''}
+            ${s >= 0 && s < 2 ? `<button onclick="litAdv()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer">${s === 0 ? 'Explore the language →' : 'Link to big ideas →'}</button>` : ''}
+            ${s >= 0 ? `<button onclick="litNext(true)" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold cursor-pointer">✓ I knew it</button><button onclick="litNext(false)" class="px-4 py-2 rounded-xl bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-bold cursor-pointer">↻ Review again</button>` : ''}
+          </div>`, 'space-y-3');
+      }
+      body.innerHTML = head + card + `<p class="text-xs text-gray-500 dark:text-gray-400">Step 1: retrieval practice. Step 2 and 3: use the quotation as a starting point to analyse language and link to themes. Write your answers in your book or in the Timed Drill.</p>`;
+    }
+
+    function litOverview(body) {
+      const gb = [["9", 142], ["8", 127], ["7", 113], ["6", 97], ["5", 81], ["4", 66], ["3", 49]];
+      body.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${litBox(`${litTag('PAPER 1 · 8702/1 · 40%', 'blue')}<h3 class="font-bold text-sm">Shakespeare and the 19th-century novel</h3><ul class="text-xs list-disc pl-4 space-y-1 text-gray-700 dark:text-gray-300"><li>1 hour 45 minutes · 64 marks · closed text</li><li><b>Section A:</b> Shakespeare, extract + whole play (30 + 4 AO4)</li><li><b>Section B:</b> 19th-century novel, extract + whole text (30)</li><li>Spend equal time on both sections and leave time to proofread.</li></ul>`)}
+          ${litBox(`${litTag('PAPER 2 · 60%', 'purple')}<h3 class="font-bold text-sm">Modern texts and poetry</h3><ul class="text-xs list-disc pl-4 space-y-1 text-gray-700 dark:text-gray-300"><li>2 hours 15 minutes · 96 marks · closed text</li><li><b>Section A:</b> post-1914 play or novel (essay, 30 + 4 AO4)</li><li><b>Section B:</b> anthology poetry, comparison</li><li><b>Section C:</b> unseen poetry, then a comparison</li></ul>`)}
+        </div>
+        ${litBox(`${litTag('ASSESSMENT OBJECTIVES (PAPER 1 ESSAY)', 'emerald')}<div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">${[["AO1", "12", "Informed personal response, references"], ["AO2", "12", "Language, form and structure"], ["AO3", "6", "Context and ideas"], ["AO4", "4", "Spelling, punctuation, vocabulary (Section A only)"]].map(a => `<div class="bg-gray-100 dark:bg-black/60 rounded-xl p-3"><b class="text-blue-600 dark:text-blue-400">${a[0]} · ${a[1]}</b><p class="text-gray-600 dark:text-gray-400 mt-1">${a[2]}</p></div>`).join('')}</div>`)}
+        ${litBox(`${litTag('GRADE BOUNDARIES · JUNE 2026 · OUT OF 160', 'amber')}<div class="grid grid-cols-3 sm:grid-cols-7 gap-2 text-center text-xs">${gb.map(g => `<div class="bg-gray-100 dark:bg-black/60 rounded-xl p-2"><b>Grade ${g[0]}</b><div class="font-mono text-blue-600 dark:text-blue-400">${g[1]}</div><div class="text-[10px] text-gray-500">${Math.round(g[1] / 1.6)}%</div></div>`).join('')}</div><p class="text-[11px] text-gray-500">Source: Atom Learning guide (22 October 2026). Boundaries change every series.</p>`)}`;
+    }
+
+    function litMarks(body) {
+      const lv = [["6", "26–30", "Convincing, critical analysis and exploration", "rose"], ["5", "21–25", "Thoughtful, developed consideration", "purple"], ["4", "16–20", "Clear understanding", "emerald"], ["3", "11–15", "Explained, structured comments", "blue"], ["2", "6–10", "Supported, relevant comments", "amber"], ["1", "1–5", "Simple, explicit comments", "amber"]];
+      body.innerHTML = `
+        ${litBox(`${litTag('SIX LEVELS · 30 MARKS · BEST FIT', 'blue')}<div class="space-y-2">${lv.map(l => `<div class="flex items-center gap-3 text-xs"><span class="w-16 font-mono font-bold">L${l[0]} · ${l[1]}</span><span class="text-gray-700 dark:text-gray-300">${l[2]}</span></div>`).join('')}</div><p class="text-xs text-gray-600 dark:text-gray-400">Missing the extract or the whole text is a rubric infringement: the answer can be capped at the top of Level 2.</p>`)}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${litBox(`${litTag('EXAMINER REPORT · JUNE 2025 · STRENGTHS', 'emerald')}<ul class="text-xs list-disc pl-4 space-y-1.5 text-gray-700 dark:text-gray-300"><li>Moving between the extract and the wider text ("elsewhere in the text").</li><li>A clear thesis in the introduction, anchored to the question.</li><li>Seeing characters as archetypes or groups in society, linking AO2 and AO3.</li><li>Tentative, exploratory language and more than one interpretation.</li></ul>`)}
+          ${litBox(`${litTag('EXAMINER REPORT · WHAT TO AVOID', 'rose')}<ul class="text-xs list-disc pl-4 space-y-1.5 text-gray-700 dark:text-gray-300"><li>Pre-learned paragraphs from social media that do not fit the question.</li><li>"Bolt-on" Freudian theory or terms like chremamorphism. Effect of words matters more than technique names.</li><li>Long recitals of history. Keep context brief and relevant.</li><li>Single words taken out of context. Read the whole sentence.</li><li>Rushing the second section. Split time equally.</li></ul>`)}
+        </div>
+        ${litBox(`${litTag('"HOW" OR "HOW FAR"?', 'purple')}<p class="text-xs text-gray-700 dark:text-gray-300"><b>How far</b> asks for your own judgement: look at different aspects and weigh them. <b>How</b> asks you to explore a range of methods. Both need a detailed answer. You may start with the extract or the whole text, but you must cover both.</p>`)}`;
+    }
+
+    function switchSubject(subject) {
+      currentSubject = subject;
+      const isLit = subject === 'lit';
+      const on = 'subject-btn active text-left p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#121214] transition cursor-pointer';
+      const off = 'subject-btn text-left p-4 rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#121214] transition cursor-pointer';
+      document.getElementById('subj-lang').className = isLit ? off : on;
+      document.getElementById('subj-lit').className = isLit ? on : off;
+
+      // Language-only controls
+      document.getElementById('paper-switcher').style.display = isLit ? 'none' : '';
+      document.getElementById('hud-marks').style.display = isLit ? 'none' : '';
+      document.getElementById('lang-nav').style.display = isLit ? 'none' : '';
+
+      const footer = document.getElementById('app-footer');
+      if (isLit) {
+        document.getElementById('app-paper-title').innerText = "English Literature";
+        document.getElementById('app-subtitle').innerText = "Revision hub · Quotation Lab";
+        footer.innerText = "AQA GCSE English Literature (8702)";
+        document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+        document.getElementById('sec-literature').classList.remove('hidden');
+        renderLit();
+      } else {
+        document.getElementById('app-paper-title').innerText = currentPaper === 'p1'
+          ? "Paper 1 Explorations in Creative Reading & Writing"
+          : "Paper 2 Writers' Viewpoints & Perspectives";
+        document.getElementById('app-subtitle').innerText = "Level 4 Writing Engine · Grade 8/9";
+        footer.innerText = "AQA English Language (8700/1 & 8700/2) · Dual-Paper Level 4 Writing Engine";
+        document.getElementById('sec-literature').classList.add('hidden');
+        switchTab(lastLangTab);
+      }
+    }
+
     function switchTab(tabId) {
+      lastLangTab = tabId;
       document.querySelectorAll('.nav-tab').forEach(btn => {
         btn.classList.remove('active');
         btn.classList.add('text-gray-600', 'dark:text-gray-400');
@@ -1092,6 +1727,7 @@
       if (tabId === 'vault') loadVaultCategory(currentVaultCat);
       if (tabId === 'drill') renderDynamicChecklist();
       if (tabId === 'ao6') renderAO6Section();
+      if (tabId === 'advice') renderAdviceSection();
     }
 
     function setFormatMode(mode) {
